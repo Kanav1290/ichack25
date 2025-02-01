@@ -4,22 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Extract Video Frames Using ffmpeg.js</title>
+    <script src=".static/script.js"></script>
   </head>
   <body>
 
-  <h1>Extract Frames from Video</h1>
-
-  <!-- Video file input -->
-  <input type="file" id="videoInput" accept="video/*">
-
-  <!-- Display frames -->
-  <div id="frames"></div>
-
-  <!-- Include the ffmpeg.js library -->
-  <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@latest"></script>
-
-  <!-- Link to your own script.js file -->
-  <script src="script.js"></script>
+    <h1>Webcam Video Stream</h1>
+    <video id="video" autoplay></video>
+    <br>
+    <button onclick="captureImage()">Capture Image</button>
+    <canvas id="canvas" width="640" height="480"></canvas>
+    <img id="capturedImage" style="display:none; width: 640px; height: 480px; border: 2px solid white;"/>
 
   </body>
 </html>

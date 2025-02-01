@@ -1,0 +1,24 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #111;
+    color: white;
+}
+#video {
+    width: 640px;
+    height: 480px;
+    border: 2px solid white;
+}
+#canvas {
+    display: none; /* Hide canvas by default */
+}
+button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background: #28a745;
+    border: none;
+    color: white;
+    border-radius: 5px;
+}
