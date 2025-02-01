@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Interview Questions</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Manage Interview Questions</h2>
+        <form id="questionForm">
+            <div class="mb-3">
+                <label for="questionText" class="form-label">Question Text</label>
+                <input type="text" class="form-control" id="questionText" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Question</button>
+        </form>
+
+        <h3 class="mt-4">Existing Questions</h3>
+        <ul id="questionsList" class="list-group"></ul>
+    </div>
+
+    <script>
+        // Fetch questions from the backend
+        async function fetchQuestions() {
+            const response = await fetch("/api/questions");
+            const questions = await response.json();
+            const questionsList = document.getElementById("questionsList");
+            questionsList.innerHTML = "";
+
+            questions.forEach(q => {
+                const li = document.createElement("li");
+                li.className = "list-group-item d-flex justify-content-between align-items-center";
+                li.innerHTML = `
+                    ${q.text}
+                    <button class="btn btn-danger btn-sm" onclick="deleteQuestion(${q.id})">Delete</button>
+                    <button class="btn btn-success btn-sm" onclick="chooseQuestion(${q.id}, '${q.text}')">Choose Question</button>
+                `;
+                questionsList.appendChild(li);
+            });
+        }
+
+        // Add a new question to the database
+        async function addQuestion(event) {
+            event.preventDefault();
+            const questionText = document.getElementById("questionText").value;
+            if (!questionText) return;
+            await fetch("/api/questions", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ text: questionText })
+            });
+            document.getElementById("questionForm").reset();
+            fetchQuestions();  // Refresh the question list
+        }
+
+        // Delete a question from the database
+        async function deleteQuestion(id) {
+            await fetch(`/api/questions/${id}`, { method: "DELETE" });
+            fetchQuestions();  // Refresh the question list after deletion
+        }
+
+        // Choose a question and set it as the active one
+        function chooseQuestion(id, questionText) {
+            // Save the selected question to localStorage
+            localStorage.setItem('activeQuestion', JSON.stringify({ id, text: questionText }));
+            // Redirect to the homepage
+            window.location.href = '/';
+        }
+
+        // Load the active question on the homepage (index.html or wherever needed)
+        window.addEventListener('load', () => {
+            const activeQuestion = localStorage.getItem('activeQuestion');
+            if (activeQuestion) {
+                const { text } = JSON.parse(activeQuestion);
+                const activeQuestionElement = document.getElementById('activeQuestion');
+                if (activeQuestionElement) {
+                    activeQuestionElement.innerHTML = `Active Question: ${text}`;
+                }
+            }
+        });
+
+        // Handle the form submission
+        document.getElementById("questionForm").addEventListener("submit", addQuestion);
+
+        // Fetch questions when the page loads
+        fetchQuestions();
+    </script>
+
+<script src="script.js"></script>
+</body>
+</html>
