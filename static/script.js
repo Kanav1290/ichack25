@@ -133,3 +133,16 @@ async function processVideo(blob) {
         console.error('Error during video upload:', error);
     }
 }
+
+
+function togglelightdark() {
+
+    let lightdark = document.getElementById("lightdark")
+
+    if (lightdark.getAttribute("href") == "../static/styles.css") {
+        lightdark.setAttribute("href", "../static/dark-mode.css");
+    } else {
+        lightdark.setAttribute("href", "../static/styles.css");
+    }
+        
+}
