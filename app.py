@@ -24,7 +24,12 @@ def get_question():
     return jsonify(data)
 
 def getPrompt():
-    pass #get from DB questions that haven't been done
+    return Prompt()
+
+class Prompt():
+    text = "Sample question"
+    prep = 10
+    time = 10
 
 if __name__ == '__main__':
     app.run(debug=True)
