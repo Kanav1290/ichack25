@@ -8,10 +8,18 @@ def index():
     return render_template('index.html')
 
 # API route to handle data
-@app.route('/api/data', methods=['POST'])
-def process_data():
-    data = request.json
-    return jsonify({"message": f"Received: {data}"})
+@app.route('/api/data', methods=['GET'])
+def get_question():
+    prompt = getPrompt()
+    data = {
+        'prompt' : prompt.text,
+        'prepTime' : prompt.prep,
+        'answerTime' : prompt.time
+    }
+    return jsonify(data)
+
+def getPrompt():
+    pass #get from DB questions that haven't been done
 
 if __name__ == '__main__':
     app.run(debug=True)

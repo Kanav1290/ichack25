@@ -9,7 +9,7 @@ ffmpeg.load().then(() => {
   console.log('FFmpeg loaded');
 });
 
-startBtn.addEventListener('click', () => {
+questionButton.addEventListener('click', () => {
     recordedChunks = [];  // Clear previous chunks
   
     const stream = videoElement.srcObject;
