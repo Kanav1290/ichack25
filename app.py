@@ -2,6 +2,14 @@ from flask import Flask, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 import os
 import random
+from io import BytesIO
+import cv2
+import numpy as np
+import subprocess
+from vosk import Model, KaldiRecognizer
+import cv2
+import wave
+import ffmpeg
 
 app = Flask(__name__)
 
@@ -193,10 +201,6 @@ class Prompt():
     text = "Sample question"
     prep = 1
     time = 5
-
-    video_path = os.path.join(app.config['UPLOAD_FOLDER'], video_file.filename)
-    video_file.save(video_path)
-    return jsonify({'message': 'Video uploaded successfully', 'video_path': video_path}), 200
 
 ### 🚀 DATABASE SETUP ###
 if __name__ == '__main__':
