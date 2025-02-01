@@ -133,6 +133,12 @@ nav {
     color: #ffffff;
 }
 
-.navbar-brand {
-    color: #ffffff;
+.btn-primary {
+    background-color: #3a3a3a;
+    border-color: #555;
 }
+
+.btn-primary:hover {
+    background-color: #555;
+}
+
