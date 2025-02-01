@@ -52,7 +52,7 @@
 </head>
 <body>
     <!-- Bootstrap Navbar (Logo Left, Links Right) -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <nav class="navbar navbar-static-top navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
         <div class="container">
             <a class="navbar-brand fw-bold" href="{{url_for('index')}}">Interview Practice</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -84,8 +84,8 @@
         <div class="chart-container">
             <canvas id="lineChart"></canvas><br>
             <h2>AI Chat and Feed</h2>
-            <div id="chatbox"></div>
-            <input type="text" id="inputBox" placeholder="Ask something..." onkeypress="handleKeyPress(event)">
+            <div id="chatbox"></div><br>
+            <input type="text" id="inputBox" class="form-group" placeholder="Chat to me..." onkeypress="handleKeyPress(event)">
         </div>
     </div>
 </div>
