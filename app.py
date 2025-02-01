@@ -59,6 +59,8 @@ def process_video():
     audio_stream = wave.open(BytesIO(audio_data), "rb")
 
     video_np = np.frombuffer(video_data, np.uint8)
+
+    app.logger.info(video_np.size)
     video = cv2.imdecode(video_np, cv2.IMREAD_COLOR)
 
     if video is None:
