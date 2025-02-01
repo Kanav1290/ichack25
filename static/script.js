@@ -1,7 +1,7 @@
 const { createFFmpeg, fetchFile } = FFmpeg;  // Destructuring from FFmpeg object
 const ffmpeg = createFFmpeg({ log: true });   // Initialize FFmpeg
 
-const videoElement = document.getElementById('videoElement');
+const videoElement = document.getElementById('video');
 const questionButton = document.getElementById('questionButton');
 const questionText = document.getElementById('questionText');
 const prepTimer = document.getElementById('prepTimer');
