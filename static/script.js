@@ -1,13 +1,13 @@
 const videoElement = document.getElementById('videoElement');
 const questionButton = document.getElementById('questionButton');
-const questionText = document.getElementById('questionText');
-const prepTimer = document.getElementById('prepTimer');
+const chooseQuestionButton = document.getElementById('chooseQuestionButton');
+const recordButton = document.getElementById('recordButton');
 const recordTimer = document.getElementById('recordTimer');
 
 let mediaRecorder;
 let recordedChunks = [];
+let recordingInterval;
 
-// Function to start the webcam
 async function startWebcam() {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
@@ -23,16 +23,14 @@ async function startWebcam() {
         mediaRecorder.ondataavailable = (event) => {
             if (event.data.size > 0) {
                 recordedChunks.push(event.data);
-                console.log("NEW DATA");
             }
         };
 
         mediaRecorder.onstop = async () => {
             const blob = new Blob(recordedChunks, { type: 'video/webm' });
-            // Process the video after recording
             await processVideo(blob);
+            resetRecordingUI();
         };
-
     } catch (error) {
         console.error("Error accessing webcam: ", error);
     }
@@ -42,104 +40,62 @@ startWebcam();
 
 function startRecording() {
     recordedChunks = [];
-    try {
-        if (mediaRecorder.state === 'inactive') {
-            mediaRecorder.start();
-            console.log('Recording started...');
-        } else {
-            console.log('Recorder is already in use or in invalid state:', mediaRecorder.state);
-        }
-    } catch (error) {
-        console.error('Error starting recording:', error);
-    }
+    mediaRecorder.start();
+    console.log('Recording started...');
+    recordButton.innerText = "Stop Recording";
+    recordButton.classList.add('btn-danger');
+    recordTimer.style.display = 'block';
+    startCountdown(120, stopRecording);
 }
 
 function stopRecording() {
-    console.log("Attempting to stop recording...");
     if (mediaRecorder.state === "recording") {
-        mediaRecorder.stop();  // This will trigger the onstop event
+        mediaRecorder.stop();
         console.log("Recording stopped");
-        questionButton.disabled = false;  // Re-enable the button
-    } else {
-        console.log("Cannot stop, mediaRecorder is not in recording state.");
     }
-    console.log("Reenabled button")
-    questionButton.disabled = false;
 }
 
-async function getNextQuestion() {
-    const response = await fetch('http://127.0.0.1:5000/api/get-prompt');
-    if (!response.ok) {
-        throw new Error('Error status: ${response.status}')
-    }
-    const data = await response.json();
-    const prompt = data.prompt;
-    const prep = data.prepTime;
-    const time = data.answerTime;
-    console.log(prompt);
-    console.log(prep);
-    console.log(time);
-    return {prompt, prep, time};
+function resetRecordingUI() {
+    recordButton.innerText = "Start Recording";
+    recordButton.classList.remove('btn-danger');
+    recordTimer.style.display = 'none';
 }
 
-function startCountdown(element, timeInSeconds, callback) {
+function startCountdown(timeInSeconds, callback) {
     let countdown = timeInSeconds;
-  
-    const interval = setInterval(() => {
-      updateCounter(element, countdown)
-      if (countdown <= 0) {
-        clearInterval(interval);
-        if (callback) callback();
-      } else {
+    recordTimer.innerText = `Time remaining: ${Math.floor(countdown / 60)}:${countdown % 60}`;
+    recordingInterval = setInterval(() => {
         countdown--;
-      }
+        if (countdown <= 0) {
+            clearInterval(recordingInterval);
+            callback();
+        }
+        recordTimer.innerText = `Time remaining: ${Math.floor(countdown / 60)}:${countdown % 60}`;
     }, 1000);
 }
 
-function updateCounter(element, countdown) {
-    const minutes = Math.floor(countdown / 60);
-    const seconds = countdown % 60;
-    element.innerText = `Time remaining: ${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
-}
-
-function onPrepEnd(time) {
-    startRecording();
-    startCountdown(recordTimer, time, stopRecording);
-}
-
-questionButton.addEventListener('click', async () => {
-    questionButton.disabled = true;
-    recordedChunks = [];  // Clear previous chunks
-    console.log("Button pressed");
-    const {prompt, prep, time} = await getNextQuestion();
-    questionText.innerText = prompt;
-    updateCounter(recordTimer, time);
-    startCountdown(prepTimer, prep, () => onPrepEnd(time));
-});
-
 async function processVideo(blob) {
-    // Create a FormData object to send the Blob to the Flask backend
     const formData = new FormData();
-    formData.append('video', blob, 'video.webm');  // Append the video Blob
-
+    formData.append('video', blob, 'video.webm');
     try {
-        // Send the video to the backend using fetch
         const response = await fetch('http://127.0.0.1:5000/api/process-video', {
             method: 'POST',
             body: formData,
         });
-
-        // Handle the response from the backend
         if (response.ok) {
             console.log('Video successfully sent to backend!');
-            //TODO: WAIT THING
-            const responseData = await response.json();
-            //TODO: ANALYZE button
-            console.log('Backend response:', responseData);
         } else {
-            console.error('Failed to send video to backend. Status:', response.status);
+            console.error('Failed to send video to backend.');
         }
     } catch (error) {
         console.error('Error during video upload:', error);
     }
 }
+
+recordButton.addEventListener('click', () => {
+    if (mediaRecorder.state === 'inactive') {
+        startRecording();
+    } else {
+        stopRecording();
+    }
+});
