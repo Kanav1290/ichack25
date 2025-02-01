@@ -1,24 +1,109 @@
-body {
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
     font-family: Arial, sans-serif;
+}
+
+/* Center the main layout */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f8f8f8;
+}
+
+/* Main Layout */
+.container {
+    display: flex;
+    width: 80%;
+    max-width: 1100px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+/* Left Panel */
+.left-panel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Webcam Section */
+.webcam-container {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    background: white;
+    padding: 10px;
+}
+
+video {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+}
+
+/* Right Panel */
+.right-panel {
+    flex: 0.5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-left: 20px;
+}
+
+/* Quote Box */
+.quote-box {
+    width: 100%;
+    background: #007bff;
+    color: white;
+    padding: 15px;
     text-align: center;
-    background-color: #111;
-    color: white;
-}
-#video {
-    width: 640px;
-    height: 480px;
-    border: 2px solid white;
-}
-#canvas {
-    display: none; /* Hide canvas by default */
-}
-button {
-    margin-top: 10px;
-    padding: 10px 20px;
     font-size: 16px;
-    cursor: pointer;
-    background: #28a745;
-    border: none;
-    color: white;
+    font-weight: bold;
     border-radius: 5px;
+}
+
+/* Buttons */
+.btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    transition: 0.3s ease;
+}
+
+.prep-btn {
+    background: #ffc107;
+    color: #333;
+}
+
+.prep-btn:hover {
+    background: #e0a800;
+}
+
+.record-btn {
+    background: #dc3545;
+    color: white;
+}
+
+.record-btn:hover {
+    background: #c82333;
 }
