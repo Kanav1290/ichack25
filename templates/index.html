@@ -14,9 +14,9 @@
 </head>
 <body>
 <!-- Bootstrap Navbar (Logo Left, Links Right) -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+<nav class="navbar navbar-static-top navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
   <div class="container">
-      <a class="navbar-brand fw-bold" href="index.html">Interview Practice</a>
+      <a class="navbar-brand fw-bold" href="{{url_for('index')}}">Interview Practice</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
           <span class="navbar-toggler-icon"></span>
       </button>
@@ -30,6 +30,9 @@
               </li>
               <li class="nav-item">
                   <a class="nav-link fw-semibold text-dark" href="{{url_for('results')}}">Results</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link fw-semibold text-dark" href="{{url_for('help')}}">Help</a>
               </li>
           </ul>
       </div>
@@ -62,6 +65,8 @@
                     <p id="questionText">"What is your greatest strength?"</p>
                 </div>
                 <button id="questionButton" class="btn btn-primary mb-2">Next Question</button>
+                <button id="chooseQuestionButton" class="btn btn-primary mb-2">Choose Question</button>
+
                 <p id="prepTimer">Prep</p>
                 <p id="recordTimer">Record</p>
             </div>
