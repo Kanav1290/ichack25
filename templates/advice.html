@@ -3,89 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interview Advice</title>
+    <title>HireVue & Interview Advice</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 20px;
-            background-color: #f9f9f9;
+            background-color: #f8f9fa;
         }
         .container {
-            max-width: 800px;
-            margin: auto;
+            max-width: 900px;
+            margin: 30px auto;
             background: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .accordion {
-            background-color: #007BFF;
-            color: white;
-            cursor: pointer;
-            padding: 15px;
-            width: 100%;
-            text-align: left;
-            border: none;
-            outline: none;
-            font-size: 18px;
-            transition: 0.4s;
-            border-radius: 5px;
-            margin-top: 10px;
+        .accordion-button {
+            font-weight: bold;
         }
-        .active, .accordion:hover {
-            background-color: #0056b3;
+        .accordion-body {
+            font-size: 16px;
         }
-        .panel {
-            padding: 0 15px;
-            background-color: white;
-            display: none;
-            overflow: hidden;
-            margin-top: 5px;
-        }
-        .panel a {
+        .external-links a {
             display: block;
-            padding: 8px 0;
+            margin-bottom: 5px;
             color: #007BFF;
             text-decoration: none;
         }
-        .panel a:hover {
+        .external-links a:hover {
             text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Interview Advice</h2>
-        
-        <button class="accordion">Question Banks</button>
-        <div class="panel">
-            <a href="https://www.wallstreetprep.com/knowledge/top-10-investment-banking-interview-questions/" target="_blank">Wall Street Prep - Investment Banking Questions</a>
-            <a href="https://www.careers.cam.ac.uk/files/example_interview_questions_for_banking_and_financial_markets.pdf" target="_blank">Cambridge Careers - Example Questions</a>
-        </div>
 
-        <button class="accordion">Interview Tips</button>
-        <div class="panel">
-            <a href="https://hbr.org/2024/09/the-hbr-guide-to-standing-out-in-an-interview" target="_blank">HBR Guide to Standing Out in an Interview</a>
-            <a href="https://hbr.org/1964/01/strategies-of-effective-interviewing" target="_blank">HBR - Strategies of Effective Interviewing</a>
-            <a href="https://hbr.org/2021/11/10-common-job-interview-questions-and-how-to-answer-them" target="_blank">HBR - 10 Common Interview Questions</a>
-            <a href="https://hbr.org/2022/11/tips-for-acing-your-first-job-interview" target="_blank">HBR - Acing Your First Interview</a>
+    <div class="container">
+        <h2 class="text-center mb-4">HireVue & Interview Advice</h2>
+
+        <div class="accordion" id="adviceAccordion">
+
+            <!-- Question Banks -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#questionBanks">
+                        Question Banks
+                    </button>
+                </h2>
+                <div id="questionBanks" class="accordion-collapse collapse show" data-bs-parent="#adviceAccordion">
+                    <div class="accordion-body external-links">
+                        <a href="https://www.wallstreetprep.com/knowledge/top-10-investment-banking-interview-questions/" target="_blank">Wall Street Prep - Investment Banking Questions</a>
+                        <a href="https://www.careers.cam.ac.uk/files/example_interview_questions_for_banking_and_financial_markets.pdf" target="_blank">Cambridge Careers - Example Questions</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interview Tips -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#interviewTips">
+                        Interview Tips
+                    </button>
+                </h2>
+                <div id="interviewTips" class="accordion-collapse collapse" data-bs-parent="#adviceAccordion">
+                    <div class="accordion-body external-links">
+                        <a href="https://hbr.org/2024/09/the-hbr-guide-to-standing-out-in-an-interview" target="_blank">HBR Guide to Standing Out in an Interview</a>
+                        <a href="https://hbr.org/1964/01/strategies-of-effective-interviewing" target="_blank">HBR - Strategies of Effective Interviewing</a>
+                        <a href="https://hbr.org/2021/11/10-common-job-interview-questions-and-how-to-answer-them" target="_blank">HBR - 10 Common Interview Questions</a>
+                        <a href="https://hbr.org/2022/11/tips-for-acing-your-first-job-interview" target="_blank">HBR - Acing Your First Interview</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Overview -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#overview">
+                        Overview of HireVue Interviews
+                    </button>
+                </h2>
+                <div id="overview" class="accordion-collapse collapse" data-bs-parent="#adviceAccordion">
+                    <div class="accordion-body">
+                        <p>One-way video interviews where you record responses to fixed questions. Typically **2-5 questions** from three categories:</p>
+                        <ul>
+                            <li><strong>Motivational:</strong> Why this industry? Why this company?</li>
+                            <li><strong>Competency:</strong> Discuss a recent transaction or macroeconomic trend.</li>
+                            <li><strong>Behavioural:</strong> Tell me about a time when you faced a challenge and what you learned.</li>
+                        </ul>
+                        <p>You'll typically have <strong>30 seconds - 2 minutes of prep</strong> and <strong>1 - 3 minutes to answer.</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- How to Succeed -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#succeed">
+                        How to Succeed in Your Interview
+                    </button>
+                </h2>
+                <div id="succeed" class="accordion-collapse collapse" data-bs-parent="#adviceAccordion">
+                    <div class="accordion-body">
+                        <ul>
+                            <li>Company Research - Study their reports, values, and recent deals.</li>
+                            <li>Attend Insight Days - Follow their LinkedIn & Bright Network.</li>
+                            <li>Use Mergersight - Analyze past M&A transactions.</li>
+                            <li>Read Financial News - Financial Times, The Economist.</li>
+                            <li>Practice Storytelling - Use the STAR method for responses.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Behavioral Questions (STAR Method) -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#behavioral">
+                        Answering Behavioral Questions (STAR Method)
+                    </button>
+                </h2>
+                <div id="behavioral" class="accordion-collapse collapse" data-bs-parent="#adviceAccordion">
+                    <div class="accordion-body">
+                        <p>Structure responses using **STAR**:</p>
+                        <ul>
+                            <li><strong>Situation:</strong> Provide context (where, when, what).</li>
+                            <li><strong>Task:</strong> What did you need to achieve?</li>
+                            <li><strong>Action:</strong> Explain how you solved the problem.</li>
+                            <li><strong>Result:</strong> Describe the outcome and what you learned.</li>
+                        </ul>
+                        <p><strong>Example:</strong></p>
+                        <blockquote>
+                            <strong>Situation:</strong> Led a team project with a tight deadline.<br>
+                            <strong>Task:</strong> Deliver a client proposal in five days.<br>
+                            <strong>Action:</strong> Assigned tasks based on strengths and held daily check-ins.<br>
+                            <strong>Result:</strong> Submitted ahead of time, and the client approved our work.
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <script>
-        var acc = document.getElementsByClassName("accordion");
-        for (var i = 0; i < acc.length; i++) {
-            acc[i].addEventListener("click", function() {
-                this.classList.toggle("active");
-                var panel = this.nextElementSibling;
-                if (panel.style.display === "block") {
-                    panel.style.display = "none";
-                } else {
-                    panel.style.display = "block";
-                }
-            });
-        }
-    </script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
