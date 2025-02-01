@@ -7,6 +7,11 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+# Route for results page
+@app.route('/results')
+def results():
+    return render_template('results.html') 
+
 # API route to handle data
 @app.route('/api/getPrompt', methods=['GET'])
 def get_question():
