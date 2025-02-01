@@ -1,10 +1,11 @@
 const { createFFmpeg, fetchFile } = FFmpeg;  // Destructuring from FFmpeg object
 const ffmpeg = createFFmpeg({ log: true });   // Initialize FFmpeg
 
-const videoElement = document.getElementById('webcam');
-const startButton = document.getElementById('start-recording');
-const stopButton = document.getElementById('stop-recording');
-const downloadLink = document.getElementById('download-video');
+const videoElement = document.getElementById('videoElement');
+const questionButton = document.getElementById('questionButton');
+const questionText = document.getElementById('questionText');
+const prepTimer = document.getElementById('prepTimer');
+const recordTimer = document.getElementById('recordTimer');
 
 let mediaRecorder;
 let recordedChunks = [];
@@ -21,13 +22,13 @@ async function startWebcam() {
             if (event.data.size > 0) recordedChunks.push(event.data);
         };
 
-        mediaRecorder.onstop = () => {
+        mediaRecorder.onstop = async () => {
             const blob = new Blob(recordedChunks, { type: 'video/webm' });
-            recordedChunks = [];
-            const url = URL.createObjectURL(blob);
-            downloadLink.href = url;
-            downloadLink.style.display = "block";
-            downloadLink.textContent = "Download Video";
+            const videoURL = URL.createObjectURL(blob);  // Create URL for the recorded video
+            console.log('Recording stopped, processing video...');
+        
+            // Process the video after recording
+            await processVideo(blob, videoURL);
         };
 
     } catch (error) {
@@ -35,20 +36,16 @@ async function startWebcam() {
     }
 }
 
-startButton.addEventListener('click', () => {
+startWebcam();
+
+function startRecording() {
     recordedChunks = [];
     mediaRecorder.start();
-    startButton.disabled = true;
-    stopButton.disabled = false;
-});
+}
 
-stopButton.addEventListener('click', () => {
+function stopRecording() {
     mediaRecorder.stop();
-    startButton.disabled = false;
-    stopButton.disabled = true;
-});
-
-startWebcam();
+}
 
 ffmpeg.load().then(() => {
   console.log('FFmpeg loaded');
