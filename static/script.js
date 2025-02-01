@@ -4,25 +4,30 @@ let mediaRecorder;
 let recordedChunks = [];
 const videoElement = document.getElementById('videoElement');
 const questionButton = document.getElementById('questionButton');
+const questionText = document.getElementById('questionText');
 
 ffmpeg.load().then(() => {
   console.log('FFmpeg loaded');
 });
+
+async function getNextQuestion() {
+    const response = await fetch('http://127.0.0.1:5000/api/getPrompt');
+    if (!response.ok) {
+        throw new Error('Error status: ${response.status}')
+    }
+    const data = await response.json();
+    const prompt = data.text;
+    const prep = data.prep;
+    const time = data.time;
+    return {prompt, prep, time};
+}
 
 questionButton.addEventListener('click', () => {
     recordedChunks = [];  // Clear previous chunks
   
     const stream = videoElement.srcObject;
     mediaRecorder = new MediaRecorder(stream);
-
-    fetch('http://127.0.0.1:5000/api/data')  // Replace with your backend API URL
-    .then(response => response.json())  // Convert response to JSON
-    .then(data => {
-        console.log('Data received from backend:', data);
-    })
-    .catch(error => {
-        console.error('Error fetching data:', error);
-    });
+    const {prompt, prep, time} = getNextQuestion();
     
     mediaRecorder.ondataavailable = (event) => {
       recordedChunks.push(event.data);  // Push recorded chunks of video
