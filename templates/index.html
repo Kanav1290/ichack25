@@ -3,29 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webcam Video Recorder</title>
+    <title>Interview Recorder</title>
+
     <script src="../static/script.js"></script>
     <link rel="stylesheet" href="../static/styles.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <h1>Record your interview</h1>
-    <div class="container">
-      <video id="webcam" autoplay></video>
-      <br>
-      <!-- 
-      <button id="start" onclick="startRecording()">Start Recording</button>
-      <button id="stop" onclick="stopRecording()" disabled>Stop Recording</button>
-      <a id="download" style="display:none;" download="recorded-video.webm">Download Video</a>
-      -->
+<body class="bg-light">
+
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Left Side: Webcam -->
+            <div class="col-md-8">
+                <h3 class="mb-3 fw-bold">Record your interview</h3>
+                <div class="border rounded p-3 bg-white shadow" id="webcam-container" style="height: 400px;">
+                    <!-- Webcam feed will go here -->
+                    <video id="webcam" autoplay></video>
+                    <br>
+                    <!-- 
+                    <button id="start" onclick="startRecording()">Start Recording</button>
+                    <button id="stop" onclick="stopRecording()" disabled>Stop Recording</button>
+                    <a id="download" style="display:none;" download="recorded-video.webm">Download Video</a>
+                    -->
+                </div>
+            </div>
+
+            <div class="col-md-4 d-flex flex-column align-items-center">
+                <div class="alert alert-primary text-center w-100" id="quote-box">
+                    "Your interview question will appear here"
+                </div>
+                <button class="btn btn-warning w-100 my-2">Prep</button>
+                <button class="btn btn-danger w-100">Record</button>
+            </div>
+        </div>
     </div>
 
-    <div class="right-panel">
-      <div class="quote-box">
-          <p>"Question"</p>
-      </div>
-      <button class="btn prep-btn">Prep</button>
-      <button class="btn record-btn">Record</button>
-    </div>
-    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
