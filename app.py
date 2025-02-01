@@ -25,6 +25,7 @@ def get_question():
         'prepTime' : prompt.prep,
         'answerTime' : prompt.time
     }
+    print(data['prepTime'])
     return jsonify(data)
 
 def getPrompt():

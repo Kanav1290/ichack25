@@ -1,6 +1,3 @@
-const { createFFmpeg, fetchFile } = FFmpeg;  // Destructuring from FFmpeg object
-const ffmpeg = createFFmpeg({ log: true });   // Initialize FFmpeg
-
 const videoElement = document.getElementById('video');
 const questionButton = document.getElementById('questionButton');
 const questionText = document.getElementById('questionText');
@@ -90,7 +87,7 @@ function onPrepEnd(time) {
 
 questionButton.addEventListener('click', () => {
     recordedChunks = [];  // Clear previous chunks
-  
+    console.log("Button pressed");
     const stream = videoElement.srcObject;
     mediaRecorder = new MediaRecorder(stream);
     const {prompt, prep, time} = getNextQuestion();
