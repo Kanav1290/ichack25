@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Advice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .accordion {
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            padding: 15px;
+            width: 100%;
+            text-align: left;
+            border: none;
+            outline: none;
+            font-size: 18px;
+            transition: 0.4s;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .active, .accordion:hover {
+            background-color: #0056b3;
+        }
+        .panel {
+            padding: 0 15px;
+            background-color: white;
+            display: none;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+        .panel a {
+            display: block;
+            padding: 8px 0;
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .panel a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Interview Advice</h2>
+        
+        <button class="accordion">Question Banks</button>
+        <div class="panel">
+            <a href="https://www.wallstreetprep.com/knowledge/top-10-investment-banking-interview-questions/" target="_blank">Wall Street Prep - Investment Banking Questions</a>
+            <a href="https://www.careers.cam.ac.uk/files/example_interview_questions_for_banking_and_financial_markets.pdf" target="_blank">Cambridge Careers - Example Questions</a>
+        </div>
+
+        <button class="accordion">Interview Tips</button>
+        <div class="panel">
+            <a href="https://hbr.org/2024/09/the-hbr-guide-to-standing-out-in-an-interview" target="_blank">HBR Guide to Standing Out in an Interview</a>
+            <a href="https://hbr.org/1964/01/strategies-of-effective-interviewing" target="_blank">HBR - Strategies of Effective Interviewing</a>
+            <a href="https://hbr.org/2021/11/10-common-job-interview-questions-and-how-to-answer-them" target="_blank">HBR - 10 Common Interview Questions</a>
+            <a href="https://hbr.org/2022/11/tips-for-acing-your-first-job-interview" target="_blank">HBR - Acing Your First Interview</a>
+        </div>
+    </div>
+
+    <script>
+        var acc = document.getElementsByClassName("accordion");
+        for (var i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.display === "block") {
+                    panel.style.display = "none";
+                } else {
+                    panel.style.display = "block";
+                }
+            });
+        }
+    </script>
+</body>
+</html>

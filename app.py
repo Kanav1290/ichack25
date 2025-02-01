@@ -12,6 +12,10 @@ def index():
 def results():
     return render_template('results.html') 
 
+@app.route('/advice')
+def advice():
+    return render_template('advice.html')
+
 # API route to handle data
 @app.route('/api/getPrompt', methods=['GET'])
 def get_question():
