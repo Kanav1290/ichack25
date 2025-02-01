@@ -16,6 +16,10 @@ def results():
 def advice():
     return render_template('advice.html')
 
+@app.route('/help')
+def help():
+    return render_template('help.html')
+
 # API route to handle data
 @app.route('/api/getPrompt', methods=['GET'])
 def get_question():
