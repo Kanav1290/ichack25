@@ -5,18 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Results Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
     <style>
         body {
             display: flex;
             flex-direction: column;
             align-items: center;
             font-family: Arial, sans-serif;
+            height: 100vh;
+            justify-content: space-around;
+            margin: 0;
+            padding: 0;
         }
         .top-container {
             display: flex;
             width: 80%;
             justify-content: space-between;
-            margin-bottom: 20px;
         }
         .chart-container {
             width: 45%;
@@ -31,7 +35,7 @@
         }
         #chatbox {
             width: 100%;
-            height: 200px;
+            height: 150px;
             border: 1px solid #ccc;
             overflow-y: auto;
             padding: 10px;
@@ -59,34 +63,51 @@
     </div>
 
     <script>
-        // Star Chart Data (Radar Chart Example)
+        // Star Chart Data (Radar Chart Example with Animation)
         const starCtx = document.getElementById('starChart').getContext('2d');
         new Chart(starCtx, {
             type: 'radar',
             data: {
-                labels: ['A', 'B', 'C', 'D', 'E'],
+                labels: ['Relevance', 'Conciseness', 'Pacing', 'Completeness', 'Focus'],
                 datasets: [{
-                    label: 'Results',
                     data: [5, 3, 4, 2, 5],
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     borderColor: 'rgba(54, 162, 235, 1)',
                     borderWidth: 2
                 }]
+            },
+            options: {
+                plugins: {
+                    legend: { display: false }
+                },
+                animation: {
+                    duration: 20000,
+                    easing: 'easeInOutElastic'
+                }
             }
         });
 
-        // Line Chart Data (Results Over Time)
+        // Line Chart Data (Animated Left to Right)
         const lineCtx = document.getElementById('lineChart').getContext('2d');
         new Chart(lineCtx, {
             type: 'line',
             data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                labels: ['Attempt 1', 'Attempt 2', 'Attempt 3', 'Attempt 4', 'Attempt 5'],
                 datasets: [{
-                    label: 'Performance',
                     data: [10, 15, 9, 20, 25],
                     borderColor: 'rgba(255, 99, 132, 1)',
                     fill: false
                 }]
+            },
+            options: {
+                plugins: {
+                    legend: { display: false }
+                },
+                animation: {
+                    duration: 20000,
+                    easing: 'easeInOutQuart',
+                    from: 0
+                }
             }
         });
 
