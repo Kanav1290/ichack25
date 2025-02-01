@@ -41,7 +41,7 @@ navigator.mediaDevices.getUserMedia({ video: true, audio: true })
         alert("Please allow camera access to use this feature.");
     });
 
-// ✅ Start recording
+// Start recording
 function startRecording() {
     recordedChunks = [];
     mediaRecorder.start();
@@ -49,7 +49,7 @@ function startRecording() {
     stopButton.disabled = false;
 }
 
-// ✅ Stop recording
+// Stop recording
 function stopRecording() {
     mediaRecorder.stop();
     startButton.disabled = false;
