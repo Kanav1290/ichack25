@@ -1,56 +1,54 @@
 const { createFFmpeg, fetchFile } = FFmpeg;  // Destructuring from FFmpeg object
 const ffmpeg = createFFmpeg({ log: true });   // Initialize FFmpeg
-const videoElement = document.getElementById('videoElement');
-const questionButton = document.getElementById('questionButton');
-const questionText = document.getElementById('questionText');
-const prepTimer = document.getElementById('prepTimer');
-const recordTimer = document.getElementById('recordTimer');
+
+const videoElement = document.getElementById('webcam');
+const startButton = document.getElementById('start-recording');
+const stopButton = document.getElementById('stop-recording');
+const downloadLink = document.getElementById('download-video');
+
 let mediaRecorder;
-let recordedChunks = []
+let recordedChunks = [];
 
-const video = document.getElementById("video");
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-const capturedImage = document.getElementById("capturedImage");
+// Function to start the webcam
+async function startWebcam() {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        videoElement.srcObject = stream;
 
-// Access the webcam
-navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-    .then(stream => {
-        video.srcObject = stream;
-        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
 
-        // Store recorded data chunks
-        mediaRecorder.ondataavailable = event => {
-            if (event.data.size > 0) {
-                recordedChunks.push(event.data);
-            }
+        mediaRecorder.ondataavailable = (event) => {
+            if (event.data.size > 0) recordedChunks.push(event.data);
         };
 
-        // When recording stops, process in backend
-        mediaRecorder.onstop = async () => {
+        mediaRecorder.onstop = () => {
             const blob = new Blob(recordedChunks, { type: 'video/webm' });
-            const videoURL = URL.createObjectURL(blob);  // Create URL for the recorded video
-            console.log('Recording stopped, processing video...');
-        
-            // Process the video after recording
-            await processVideo(blob, videoURL);
-          };
-    })
-    .catch(error => {
-        console.error("Error accessing webcam:", error);
-        alert("Please allow camera access to use this feature.");
-    });
+            recordedChunks = [];
+            const url = URL.createObjectURL(blob);
+            downloadLink.href = url;
+            downloadLink.style.display = "block";
+            downloadLink.textContent = "Download Video";
+        };
 
-// Start recording
-function startRecording() {
+    } catch (error) {
+        console.error("Error accessing webcam: ", error);
+    }
+}
+
+startButton.addEventListener('click', () => {
     recordedChunks = [];
     mediaRecorder.start();
-}
+    startButton.disabled = true;
+    stopButton.disabled = false;
+});
 
-// Stop recording
-function stopRecording() {
+stopButton.addEventListener('click', () => {
     mediaRecorder.stop();
-}
+    startButton.disabled = false;
+    stopButton.disabled = true;
+});
+
+startWebcam();
 
 ffmpeg.load().then(() => {
   console.log('FFmpeg loaded');

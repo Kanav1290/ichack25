@@ -1,109 +1,33 @@
-/* Reset default styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
-
-/* Center the main layout */
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f8f8f8;
+    background-color: #f8f9fa;
 }
 
-/* Main Layout */
-.container {
-    display: flex;
-    width: 80%;
-    max-width: 1100px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+.instructions {
+    text-align: left;
     padding: 20px;
 }
 
-/* Left Panel */
-.left-panel {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    font-weight: bold;
-}
-
-/* Webcam Section */
-.webcam-container {
-    flex: 2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid #ddd;
+.question-box {
+    background: #0d6efd;
+    color: white;
+    padding: 15px;
     border-radius: 10px;
-    overflow: hidden;
-    background: white;
-    padding: 10px;
+    text-align: center;
+    font-size: 18px;
 }
 
 video {
     width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 10px;
+    max-width: 640px;
+    border-radius: 8px;
+    border: 2px solid #000;
 }
 
-/* Right Panel */
-.right-panel {
-    flex: 0.5;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    margin-left: 20px;
+.controls {
+    margin-top: 15px;
 }
 
-/* Quote Box */
-.quote-box {
-    width: 100%;
-    background: #007bff;
-    color: white;
-    padding: 15px;
-    text-align: center;
+button {
+    width: 200px;
     font-size: 16px;
-    font-weight: bold;
-    border-radius: 5px;
-}
-
-/* Buttons */
-.btn {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    transition: 0.3s ease;
-}
-
-.prep-btn {
-    background: #ffc107;
-    color: #333;
-}
-
-.prep-btn:hover {
-    background: #e0a800;
-}
-
-.record-btn {
-    background: #dc3545;
-    color: white;
-}
-
-.record-btn:hover {
-    background: #c82333;
 }
