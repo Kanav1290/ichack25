@@ -1,7 +1,5 @@
 const { createFFmpeg, fetchFile } = FFmpeg;  // Destructuring from FFmpeg object
 const ffmpeg = createFFmpeg({ log: true });   // Initialize FFmpeg
-let mediaRecorder;
-let recordedChunks = [];
 const videoElement = document.getElementById('videoElement');
 const questionButton = document.getElementById('questionButton');
 let mediaRecorder;
@@ -12,20 +10,20 @@ const startButton = document.getElementById("start");
 const stopButton = document.getElementById("stop");
 const downloadLink = document.getElementById("download");
 
-// ✅ Access the webcam
+// Access the webcam
 navigator.mediaDevices.getUserMedia({ video: true, audio: true })
     .then(stream => {
         video.srcObject = stream;
         mediaRecorder = new MediaRecorder(stream);
 
-        // ✅ Store recorded data chunks
+        // Store recorded data chunks
         mediaRecorder.ondataavailable = event => {
             if (event.data.size > 0) {
                 recordedChunks.push(event.data);
             }
         };
 
-        // ✅ When recording stops, create a video file
+        // When recording stops, create a video file
         mediaRecorder.onstop = () => {
             const blob = new Blob(recordedChunks, { type: "video/webm" });
             recordedChunks = [];
