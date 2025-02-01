@@ -1,0 +1,31 @@
+body {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+.navbar {
+    background-color: #1e1e1e !important;
+}
+
+.navbar .nav-link {
+    color: #ffffff !important;
+}
+
+.navbar .nav-link:hover {
+    color: #d1d1d1 !important;
+}
+
+.interview-box, .quote-box {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    border: 1px solid #333;
+}
+
+.btn-primary {
+    background-color: #3a3a3a;
+    border-color: #555;
+}
+
+.btn-primary:hover {
+    background-color: #555;
+}
