@@ -45,8 +45,58 @@
 
     <div class="container helpPage">
         <h2 class="text-center mb-4">Help and Options</h2>
-        
 
+        <div class="accordion" id="menuAccordion">
+
+            <!-- Option 1 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#option1">
+                        Home
+                    </button>
+                </h2>
+                <div id="option1" class="accordion-collapse collapse" data-bs-parent="#menuAccordion">
+                    <div class="accordion-body">
+                        <p>This is where the interview will take place. When you are ready, generate a new question, 
+                            and you will be given prep time to prepare your answer. Once the timer is up, the interview
+                            will begin. Once the timer for the interview runs out, your video will be saved and graded.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Option 2 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#option2">
+                        Advice
+                    </button>
+                </h2>
+                <div id="option2" class="accordion-collapse collapse" data-bs-parent="#menuAccordion">
+                    <div class="accordion-body">
+                        <p>Here you will find links to websites which provide advice for preparing for interviews, and tips on
+                            acing and structuring your interviews.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Option 3 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#option3">
+                        Results
+                    </button>
+                </h2>
+                <div id="option3" class="accordion-collapse collapse" data-bs-parent="#menuAccordion">
+                    <div class="accordion-body">
+                        <p>Upon completion, an AI will process and evaluate your interview and grade it based on several categories, and
+                            you can see these results in this page! With these stats, reflect and try and improve your strategy before trying again.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 
     <!-- Bootstrap JS -->
