@@ -26,34 +26,28 @@ navigator.mediaDevices.getUserMedia({ video: true, audio: true })
             }
         };
 
-        // When recording stops, create a video file
-        mediaRecorder.onstop = () => {
-            const blob = new Blob(recordedChunks, { type: "video/webm" });
-            recordedChunks = [];
-            const url = URL.createObjectURL(blob);
-            downloadLink.href = url;
-            downloadLink.style.display = "block"; // Show download button
-            downloadLink.innerText = "Download Video";
-        };
+        // When recording stops, process in backend
+        mediaRecorder.onstop = async () => {
+            const blob = new Blob(recordedChunks, { type: 'video/webm' });
+            const videoURL = URL.createObjectURL(blob);  // Create URL for the recorded video
+            console.log('Recording stopped, processing video...');
+        
+            // Process the video after recording
+            await processVideo(blob, videoURL);
+          };
     })
     .catch(error => {
         console.error("Error accessing webcam:", error);
         alert("Please allow camera access to use this feature.");
     });
 
-// ✅ Start recording
 function startRecording() {
     recordedChunks = [];
     mediaRecorder.start();
-    startButton.disabled = true;
-    stopButton.disabled = false;
 }
 
-// ✅ Stop recording
 function stopRecording() {
     mediaRecorder.stop();
-    startButton.disabled = false;
-    stopButton.disabled = true;
 }
 
 ffmpeg.load().then(() => {
@@ -72,13 +66,14 @@ async function getNextQuestion() {
     return {prompt, prep, time};
 }
 
-function startCountdown(element, timeInSeconds) {
+function startCountdown(element, timeInSeconds, callback) {
     let countdown = timeInSeconds;
   
     const interval = setInterval(() => {
       updateCounter(element, countdown)
       if (countdown <= 0) {
         clearInterval(interval);
+        if (callback) callback();
       } else {
         countdown--;
       }
@@ -91,6 +86,11 @@ function updateCounter(element, timeInSeconds) {
     element.innerText = 'Time remaining: ${minutes}:${seconds < 10 ? "0" + seconds : seconds}';
 }
 
+function onPrepEnd(time) {
+    startRecording();
+    startCountdown(recordTimer, time, stopRecording());
+}
+
 questionButton.addEventListener('click', () => {
     recordedChunks = [];  // Clear previous chunks
   
@@ -98,21 +98,8 @@ questionButton.addEventListener('click', () => {
     mediaRecorder = new MediaRecorder(stream);
     const {prompt, prep, time} = getNextQuestion();
     questionText.innerText = prompt;
-    startCountdown(prepTimer, prep);
+    startCountdown(prepTimer, prep, onPrepEnd(time));
     updateCounter(recordTimer, time);
-    
-    mediaRecorder.ondataavailable = (event) => {
-      recordedChunks.push(event.data);  // Push recorded chunks of video
-    };
-  
-    mediaRecorder.onstop = async () => {
-      const blob = new Blob(recordedChunks, { type: 'video/webm' });
-      const videoURL = URL.createObjectURL(blob);  // Create URL for the recorded video
-      console.log('Recording stopped, processing video...');
-  
-      // Process the video after recording
-      await processVideo(blob, videoURL);
-    };
   
     mediaRecorder.start();
     console.log('Recording started...');
