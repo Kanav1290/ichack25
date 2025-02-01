@@ -8,6 +8,7 @@ body {
     justify-content: center;
 }
 .interview-box {
+    max-width: 600px;
     background: white;
     border-radius: 10px;
     padding: 20px;
@@ -17,7 +18,7 @@ body {
     position: relative;
     border-radius: 10px;
     overflow: hidden;
-    border: 2px solid #ddd;
+    border: 10px solid #ddd;
 }
 .right-panel {
     background: white;
@@ -78,4 +79,43 @@ body {
     justify-content: space-around;
     margin: 0;
     padding: 0;
+}
+.helpPage {
+    max-width: 900px;
+    margin: 30px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.advicePage {
+    max-width: 900px;
+    margin: 30px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.resultsPage {
+    max-width: 1300px;
+    margin: 30px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.accordion-button {
+    font-weight: bold;
+}
+.accordion-body {
+    font-size: 16px;
+}
+.external-links a {
+    display: block;
+    margin-bottom: 5px;
+    color: #007BFF;
+    text-decoration: none;
+}
+.external-links a:hover {
+    text-decoration: underline;
 }
