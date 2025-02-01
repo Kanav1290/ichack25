@@ -8,7 +8,7 @@ def index():
     return render_template('index.html')
 
 # API route to handle data
-@app.route('/api/data', methods=['GET'])
+@app.route('/api/getPrompt', methods=['GET'])
 def get_question():
     prompt = getPrompt()
     data = {

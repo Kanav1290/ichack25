@@ -14,6 +14,15 @@ questionButton.addEventListener('click', () => {
   
     const stream = videoElement.srcObject;
     mediaRecorder = new MediaRecorder(stream);
+
+    fetch('http://127.0.0.1:5000/api/data')  // Replace with your backend API URL
+    .then(response => response.json())  // Convert response to JSON
+    .then(data => {
+        console.log('Data received from backend:', data);
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
     
     mediaRecorder.ondataavailable = (event) => {
       recordedChunks.push(event.data);  // Push recorded chunks of video
@@ -29,7 +38,5 @@ questionButton.addEventListener('click', () => {
     };
   
     mediaRecorder.start();
-    startBtn.disabled = true;
-    stopBtn.disabled = false;
     console.log('Recording started...');
   });
