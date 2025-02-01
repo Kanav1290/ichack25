@@ -1,6 +1,11 @@
 from flask import Flask, request, jsonify, render_template
+import os
 
 app = Flask(__name__)
+
+UPLOAD_FOLDER = './uploads'
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Route for homepage
 @app.route('/')
@@ -17,7 +22,7 @@ def advice():
     return render_template('advice.html')
 
 # API route to handle data
-@app.route('/api/getPrompt', methods=['GET'])
+@app.route('/api/get-prompt', methods=['GET'])
 def get_question():
     prompt = getPrompt()
     data = {
@@ -28,13 +33,25 @@ def get_question():
     app.logger.info(data['prepTime'])
     return jsonify(data)
 
+@app.route('/api/process-video', methods=['POST'])
+def process_video():
+    if 'video' not in request.files:
+        return jsonify({'error': 'No video part'}), 400
+    video_file = request.files['video']
+    if video_file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+    video_path = os.path.join(app.config['UPLOAD_FOLDER'], video_file.filename)
+    video_file.save(video_path)
+    app.logger.info("Saved video")
+    return jsonify({'message': 'Video uploaded successfully', 'video_path': video_path}), 200
+
 def getPrompt():
     return Prompt()
 
 class Prompt():
     text = "Sample question"
-    prep = 10
-    time = 10
+    prep = 1
+    time = 5
 
 if __name__ == '__main__':
     app.run(debug=True)
