@@ -185,3 +185,35 @@ async function uploadAudioToBackend(audioBlob) {
         console.error('Error:', error);
     }
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    const darkModeToggle = document.getElementById("darkModeToggle");
+    const darkModeStylesheet = document.createElement("link");
+
+    darkModeStylesheet.rel = "stylesheet";
+    darkModeStylesheet.href = "../static/dark-mode.css";
+    darkModeStylesheet.id = "dark-mode-stylesheet";
+
+    // Apply dark mode if enabled in localStorage
+    if (localStorage.getItem("darkMode") === "enabled") {
+        document.head.appendChild(darkModeStylesheet);
+        if (darkModeToggle) darkModeToggle.innerText = "Light Mode";
+    }
+
+    // Event listener for toggle button
+    if (darkModeToggle) {
+        darkModeToggle.addEventListener("click", function () {
+            if (document.getElementById("dark-mode-stylesheet")) {
+                // Disable dark mode
+                document.getElementById("dark-mode-stylesheet").remove();
+                localStorage.setItem("darkMode", "disabled");
+                darkModeToggle.innerText = "Dark Mode";
+            } else {
+                // Enable dark mode
+                document.head.appendChild(darkModeStylesheet);
+                localStorage.setItem("darkMode", "enabled");
+                darkModeToggle.innerText = "Light Mode";
+            }
+        });
+    }
+});
