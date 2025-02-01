@@ -133,3 +133,34 @@ async function processVideo(blob) {
         console.error('Error during video upload:', error);
     }
 }
+
+async function addQuestion(event) {
+    event.preventDefault();
+    const questionText = document.getElementById("questionText").value;
+    if (!questionText) return;
+
+    try {
+        const response = await fetch("/api/questions", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text: questionText, prepTime: 30, answerTime: 120 })
+        });
+
+        if (!response.ok) throw new Error("Failed to add question");
+
+        document.getElementById("questionForm").reset();
+        fetchQuestions(); // Refresh list
+    } catch (error) {
+        console.error("Error adding question:", error);
+    }
+}
+
+
+
+recordButton.addEventListener('click', () => {
+    if (mediaRecorder.state === 'inactive') {
+        startRecording();
+    } else {
+        stopRecording();
+    }
+});
