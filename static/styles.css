@@ -9,9 +9,7 @@ body {
     height: 480px;
     border: 2px solid white;
 }
-#canvas {
-    display: none; /* Hide canvas by default */
-}
+
 button {
     margin-top: 10px;
     padding: 10px 20px;
@@ -21,4 +19,9 @@ button {
     border: none;
     color: white;
     border-radius: 5px;
+    margin-right: 5px;
+}
+button:disabled {
+    background: gray;
+    cursor: not-allowed;
 }

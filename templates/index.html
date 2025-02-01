@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Extract Video Frames Using ffmpeg.js</title>
-    <script src=".static/script.js"></script>
-  </head>
-  <body>
-
-    <h1>Webcam Video Stream</h1>
+    <title>Webcam Video Recorder</title>
+    <script src="../static/script.js"></script>
+    <link rel="stylesheet" href="../static/styles.css">
+</head>
+<body>
+    <h1>Record your interview</h1>
     <video id="video" autoplay></video>
     <br>
-    <button onclick="captureImage()">Capture Image</button>
-    <canvas id="canvas" width="640" height="480"></canvas>
-    <img id="capturedImage" style="display:none; width: 640px; height: 480px; border: 2px solid white;"/>
+    <button id="start" onclick="startRecording()">Start Recording</button>
+    <button id="stop" onclick="stopRecording()" disabled>Stop Recording</button>
+    <a id="download" style="display:none;" download="recorded-video.webm">Download Video</a>
 
-  </body>
+    <script>
+        
+    </script>
+</body>
 </html>
