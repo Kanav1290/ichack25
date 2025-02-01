@@ -1,4 +1,4 @@
-const videoElement = document.getElementById('video');
+const videoElement = document.getElementById('videoElement');
 const questionButton = document.getElementById('questionButton');
 const questionText = document.getElementById('questionText');
 const prepTimer = document.getElementById('prepTimer');
@@ -43,10 +43,6 @@ function startRecording() {
 function stopRecording() {
     mediaRecorder.stop();
 }
-
-ffmpeg.load().then(() => {
-  console.log('FFmpeg loaded');
-});
 
 async function getNextQuestion() {
     const response = await fetch('http://127.0.0.1:5000/api/getPrompt');
