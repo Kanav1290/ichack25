@@ -5,11 +5,14 @@ let recordedChunks = [];
 const videoElement = document.getElementById('videoElement');
 const questionButton = document.getElementById('questionButton');
 const questionText = document.getElementById('questionText');
+const prepTimer = document.getElementById('prepTimer');
+const recordTimer = document.getElementById('recordTimer');
 
 const video = document.getElementById("video");
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const capturedImage = document.getElementById("capturedImage");
+
 
 // ✅ Access webcam and display video stream
 navigator.mediaDevices.getUserMedia({ video: true })
@@ -44,12 +47,34 @@ async function getNextQuestion() {
     return {prompt, prep, time};
 }
 
+function startCountdown(element, timeInSeconds) {
+    let countdown = timeInSeconds;
+  
+    const interval = setInterval(() => {
+      updateCounter(element, countdown)
+      if (countdown <= 0) {
+        clearInterval(interval);
+      } else {
+        countdown--;
+      }
+    }, 1000);
+}
+
+function updateCounter(element, timeInSeconds) {
+    const minutes = Math.floor(countdown / 60);
+    const seconds = countdown % 60;
+    element.innerText = 'Time remaining: ${minutes}:${seconds < 10 ? "0" + seconds : seconds}';
+}
+
 questionButton.addEventListener('click', () => {
     recordedChunks = [];  // Clear previous chunks
   
     const stream = videoElement.srcObject;
     mediaRecorder = new MediaRecorder(stream);
     const {prompt, prep, time} = getNextQuestion();
+    questionText.innerText = prompt;
+    startCountdown(prepTimer, prep);
+    updateCounter(recordTimer, time);
     
     mediaRecorder.ondataavailable = (event) => {
       recordedChunks.push(event.data);  // Push recorded chunks of video
