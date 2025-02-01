@@ -1,19 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Extract Video Frames Using ffmpeg.js</title>
+    <title>Webcam Video Recorder</title>
     <script src=".static/script.js"></script>
-  </head>
-  <body>
-
-    <h1>Webcam Video Stream</h1>
+    <link rel="stylesheet" href=".static/styles.css">
+</head>
+<body>
+    <h1>Webcam Video Recorder</h1>
     <video id="video" autoplay></video>
     <br>
-    <button onclick="captureImage()">Capture Image</button>
-    <canvas id="canvas" width="640" height="480"></canvas>
-    <img id="capturedImage" style="display:none; width: 640px; height: 480px; border: 2px solid white;"/>
+    <button id="start" onclick="startRecording()">Start Recording</button>
+    <button id="stop" onclick="stopRecording()" disabled>Stop Recording</button>
+    <a id="download" style="display:none;" download="recorded-video.webm">Download Video</a>
 
-  </body>
+    <script>
+        let mediaRecorder;
+        let recordedChunks = [];
+        const video = document.getElementById("video");
+        const startButton = document.getElementById("start");
+        const stopButton = document.getElementById("stop");
+        const downloadLink = document.getElementById("download");
+
+        // ✅ Access the webcam
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+            .then(stream => {
+                video.srcObject = stream;
+                mediaRecorder = new MediaRecorder(stream);
+
+                // ✅ Store recorded data chunks
+                mediaRecorder.ondataavailable = event => {
+                    if (event.data.size > 0) {
+                        recordedChunks.push(event.data);
+                    }
+                };
+
+                // ✅ When recording stops, create a video file
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(recordedChunks, { type: "video/webm" });
+                    recordedChunks = [];
+                    const url = URL.createObjectURL(blob);
+                    downloadLink.href = url;
+                    downloadLink.style.display = "block"; // Show download button
+                    downloadLink.innerText = "Download Video";
+                };
+            })
+            .catch(error => {
+                console.error("Error accessing webcam:", error);
+                alert("Please allow camera access to use this feature.");
+            });
+
+        // ✅ Start recording
+        function startRecording() {
+            recordedChunks = [];
+            mediaRecorder.start();
+            startButton.disabled = true;
+            stopButton.disabled = false;
+        }
+
+        // ✅ Stop recording
+        function stopRecording() {
+            mediaRecorder.stop();
+            startButton.disabled = false;
+            stopButton.disabled = true;
+        }
+    </script>
+</body>
 </html>
