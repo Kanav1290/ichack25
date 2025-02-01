@@ -9,14 +9,23 @@
 </head>
 <body>
     <h1>Record your interview</h1>
-    <video id="video" autoplay></video>
-    <br>
-    <button id="start" onclick="startRecording()">Start Recording</button>
-    <button id="stop" onclick="stopRecording()" disabled>Stop Recording</button>
-    <a id="download" style="display:none;" download="recorded-video.webm">Download Video</a>
+    <div class="container">
+      <video id="webcam" autoplay></video>
+      <br>
+      <!-- 
+      <button id="start" onclick="startRecording()">Start Recording</button>
+      <button id="stop" onclick="stopRecording()" disabled>Stop Recording</button>
+      <a id="download" style="display:none;" download="recorded-video.webm">Download Video</a>
+      -->
+    </div>
 
-    <script>
-        
-    </script>
+    <div class="right-panel">
+      <div class="quote-box">
+          <p>"Question"</p>
+      </div>
+      <button class="btn prep-btn">Prep</button>
+      <button class="btn record-btn">Record</button>
+    </div>
+    
 </body>
 </html>
