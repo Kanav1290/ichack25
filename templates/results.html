@@ -1,3 +1,5 @@
+<!--;atest version, works use this.-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -75,20 +77,46 @@
             }
         });
 
-        // Line Chart Data (Results Over Time)
+        // Line Chart: Plot Points First, Then Connect
         const lineCtx = document.getElementById('lineChart').getContext('2d');
-        new Chart(lineCtx, {
-            type: 'line',
+        const dataPoints = [10, 15, 9, 20, 25];
+        const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May'];
+        
+        const lineChart = new Chart(lineCtx, {
+            type: 'scatter',
             data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                labels: labels,
                 datasets: [{
                     label: 'Performance',
-                    data: [10, 15, 9, 20, 25],
+                    data: dataPoints.map((val, index) => ({ x: index, y: val })),
                     borderColor: 'rgba(255, 99, 132, 1)',
-                    fill: false
+                    backgroundColor: 'rgba(255, 99, 132, 1)',
+                    pointRadius: 5,
+                    showLine: false
                 }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom',
+                        ticks: {
+                            callback: function(value, index) {
+                                return labels[index] || '';
+                            }
+                        }
+                    },
+                    y: { beginAtZero: true }
+                }
             }
         });
+
+        setTimeout(() => {
+            lineChart.data.datasets[0].showLine = true;
+            lineChart.data.datasets[0].borderWidth = 2;
+            lineChart.update();
+        }, 1500);
 
         // Chatbox Logic
         function handleKeyPress(event) {
