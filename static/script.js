@@ -5,6 +5,28 @@ let recordedChunks = [];
 const videoElement = document.getElementById('videoElement');
 const questionButton = document.getElementById('questionButton');
 
+const video = document.getElementById("video");
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+const capturedImage = document.getElementById("capturedImage");
+
+// ✅ Access webcam and display video stream
+navigator.mediaDevices.getUserMedia({ video: true })
+    .then(stream => {
+        video.srcObject = stream;
+    })
+    .catch(error => {
+        console.error("Error accessing webcam:", error);
+    });
+
+// ✅ Capture image from the video
+function captureImage() {
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const imageData = canvas.toDataURL("image/png"); // Convert to image URL
+    capturedImage.src = imageData;
+    capturedImage.style.display = "block"; // Show the captured image
+}
+
 ffmpeg.load().then(() => {
   console.log('FFmpeg loaded');
 });
