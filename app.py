@@ -159,9 +159,9 @@ def process_video():
     session['scores'] = scores
     session['verbal_response'] = verbal_response
     session['question'] = question
-    return redirect(url_for('show_results'))
+    return jsonify({"success": True, "redirect_url": "/result"}), 200
 
-@app.route('/result', methods=['POST'])
+@app.route('/result', methods=['GET'])
 def show_results():
     # Extract values from the form request
     scores = session.get('scores', [])
