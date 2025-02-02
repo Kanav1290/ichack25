@@ -105,7 +105,7 @@ function updateCounter(element, countdown) {
 }
 function onPrepEnd(time) {
     startRecording();
-    startCountdown(recordTimer, time, stopRecording);
+    startCountdown(recordTimer, time, () => {stopRecording(); showLoading(); });
 }
 
 questionButton.addEventListener('click', async () => {
@@ -148,6 +148,11 @@ async function processVideo(blob) {
         console.error('Error during video upload:', error);
     }
 }
+
+function showLoading() {
+    const overlay = document.getElementById('loadingOverlay');
+    overlay.style.display = 'flex'; // Show overlay (darken screen)
+  }
 
 const urlParams = new URLSearchParams(window.location.search);
 
