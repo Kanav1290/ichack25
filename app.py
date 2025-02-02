@@ -145,6 +145,8 @@ def delete_question(question_id):
         return jsonify({"message": "Question deleted"})
     return jsonify({"error": "Question not found"}), 404
 
+x = 1
+
 # ✅ Process video upload
 @app.route('/api/process-video', methods=['POST'])
 def process_video():
@@ -164,10 +166,11 @@ def process_video():
     app.logger.warning(transcript)
     question = request.form.get('question', "Err getting question")
     (scores, verbal_response) = analyze_response(transcript, question)
+    scores = random.sample(range(1,101), 4)
     app.logger.warning(scores)
     app.logger.warning(verbal_response)
     (drowsy, alert) = drowsiness(frames)
-    scores.append(alert)
+    scores.insert(0, alert)
     # Render an HTML page with a form that auto-submits via POST
     session['scores'] = scores
     session['verbal_response'] = verbal_response
