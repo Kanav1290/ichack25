@@ -58,7 +58,7 @@
                         <div class="col-2 text-end">
                             <div class="btn-group">
                                 <button class="btn btn-danger btn-sm" onclick="deleteQuestion(${q.id})">Delete</button>
-                                <button class="btn btn-success btn-sm" onclick="chooseQuestion(${q.id}, '${q.text}')">Choose Question</button>
+                                <button class="btn btn-success btn-sm" onclick="chooseQuestion(${q.id}, '${q.text}', ${q.prepTime}, ${q.answerTime})">Choose Question</button>
                             </div>
                         </div>
                     </div>
@@ -99,8 +99,9 @@
                 JSON.stringify({ id, text: questionText, prep: prepTime, time: answerTime })
             );
             // Redirect to the homepage
-            window.location.href = '/';
+            window.location.href = '/index.html?autoClick=true';
         }
+
 
 
         // Load the active question on the homepage (index.html or wherever needed)

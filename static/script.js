@@ -119,7 +119,6 @@ questionButton.addEventListener('click', async () => {
     startCountdown(prepTimer, prep, () => onPrepEnd(time));
 });
 
-
 async function processVideo(blob) {
     // Create a FormData object to send the Blob to the Flask backend
     const formData = new FormData();
