@@ -5,12 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Results Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- <link rel="stylesheet" href="styles.css"> -->
-        <!-- Bootstrap CSS -->
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link id="dyslexicStylesheet" rel="stylesheet" href="">
     <link id="themeStylesheet" rel="stylesheet" href="../static/styles.css">
-
+    <style>
+        .dashboard-container {
+            display: flex;
+            gap: 2rem;
+            padding: 2rem;
+        }
+        .chart-container {
+            flex: 1;
+        }
+        #feedbackBox {
+            flex: 1;
+            background-color: #f9f9f9;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body>
     <!-- Bootstrap Navbar (Logo Left, Links Right) -->
@@ -39,21 +54,22 @@
         </div>
     </nav>
     <!-- Add spacing below navbar -->
-<div class="mt-4"></div>
-<div class = "resultsPage">
-    <h1>Results Dashboard</h1>
-    <div class="top-container">
-        <div class="chart-container">
-            <canvas id="starChart"></canvas>
-        </div>
-        <div class="chart-container">
-            <canvas id="lineChart"></canvas><br>
-            <h2>AI Chat and Feed</h2>
-            <div id="chatbox"></div><br>
-            <input type="text" id="inputBox" class="form-group" placeholder="Chat to me..." onkeypress="handleKeyPress(event)">
+    <div class="mt-4"></div>
+
+    <div class="resultsPage">
+        <h1>Results Dashboard</h1>
+        <div class="dashboard-container">
+            <!-- Star Chart Container -->
+            <div class="chart-container">
+                <canvas id="starChart"></canvas>
+            </div>
+            <!-- Feedback Box Container -->
+            <div id="feedbackBox">
+                <h2>Feedback</h2>
+                <p>{{ vresponse or "Error: feedback failed to load" }}</p>
+            </div>
         </div>
     </div>
-</div>
 
     <script>
         // Star Chart (Radar)
@@ -63,7 +79,7 @@
             data: {
                 labels: ['Relevance', 'Conciseness', 'Pacing', 'Completeness', 'Focus'],
                 datasets: [{
-                    data: {{ scores }},//[5, 3, 4, 2, 5],
+                    data: {{ scores }}, // Example: [5, 3, 4, 2, 5]
                     backgroundColor: 'rgba(99, 162, 235, 0.2)',
                     borderColor: 'rgba(54, 162, 235, 1)',
                     borderWidth: 2
@@ -79,63 +95,8 @@
                 }
             }
         });
-
-        // Line Chart (Performance Over Time)
-        const lineCtx = document.getElementById('lineChart').getContext('2d');
-        const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May'];
-        const dataPoints = [10, 15, 9, 20, 25];
-
-        const lineChart = new Chart(lineCtx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Performance',
-                    data: dataPoints,
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderWidth: 2,
-                    fill: true,
-                    tension: 0.3
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    x: {
-                        ticks: {
-                            callback: (value, index) => labels[index] || ''
-                        }
-                    },
-                    y: { beginAtZero: true }
-                },
-                plugins: {
-                    legend: { display: true }
-                },
-                animation: {
-                    duration: 2000,
-                    easing: 'easeInOutQuart'
-                }
-            }
-        });
-
-        // Chatbox Logic
-        function handleKeyPress(event) {
-            if (event.key === 'Enter') {
-                const input = document.getElementById('inputBox');
-                const chatbox = document.getElementById('chatbox');
-                
-                if (input.value.trim() !== '') {
-                    chatbox.innerHTML += `<p><strong>You:</strong> ${input.value}</p>`;
-                    chatbox.innerHTML += `<p><strong>AI:</strong> Let me think...</p>`;
-                    input.value = '';
-                    chatbox.scrollTop = chatbox.scrollHeight;
-                }
-            }
-        }
     </script>
 
-<script src="../static/darkdyslexic.js"></script>
+    <script src="../static/darkdyslexic.js"></script>
 </body>
-
 </html>

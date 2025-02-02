@@ -11,7 +11,7 @@ import ffmpeg
 import moviepy as mp
 import speech_recognition as sr
 from pydub import AudioSegment
-import openai
+from openai import OpenAI
 import os
 import tempfile
 
@@ -22,7 +22,7 @@ with open("api.key", "r+") as f:
     if len(key) == 0:
         raise Exception("Mising OpenAI key")
     else:
-        openai.api_key = key
+        client = OpenAI(api_key = key)
         app.secret_key = key
 
 try:
@@ -301,35 +301,36 @@ def analyze_response(transcription, question, time=2):
 
     Provide in the following format (without the square brackets, these indicate where the data should be):
     [score for Relevance to question]
-    [score for clariry and structure]
+    [score for clarity and structure]
     [score for confidence and tone]
     [score for use of examples and detail]
 
     [feedback]
     """
-
+    
     try:
-        response = openai.ChatCompletion.create(
-            model="gpt-4",  # Use "gpt-4" if needed
+        response = client.chat.completions.create(
+            model="gpt-4",
             messages=[
                 {"role": "system", "content": "You are an expert interview evaluator."},
                 {"role": "user", "content": prompt}
             ]
         )
-        raw = response['choices'][0]['message']['content']
+        raw = response.choices[0].message.content
         lines = raw.strip().split("\n")
 
         # Extract the first four integers from the first four lines
-        first_four_integers = [int(lines[i]) for i in range(4)]
+        first_four_integers = [int(lines[i]) for i in range(4) if lines[i].isdigit()]
 
         # Extract the text after the empty line
         empty_line_index = lines.index("") if "" in lines else 4
         remaining_text = "\n".join(lines[empty_line_index + 1:])
         return (first_four_integers, remaining_text)
-    
+
     except Exception as e:
         app.logger.error(f"Error with OpenAI request: {e}")
-        return ([0,0,0,0], "Error generating OpenAI request")
+        return ([0, 0, 0, 0], "Error generating OpenAI request")
+
 
 def getPrompt():
     # Fetch a random question from the database (similar to your get_question route)
