@@ -171,9 +171,13 @@ async function processVideo(blob) {
         // Handle the response from the backend
         if (response.ok) {
             console.log('Video successfully sent to backend!');
-            //TODO: WAIT THING
             const responseData = await response.json();
-            //TODO: ANALYZE button
+            if (responseData.success) {
+                // Redirect to the 'result' page as per the backend response
+                window.location.href = responseData.redirect_url; // Redirect to '/result'
+            } else {
+                console.error('Processing failed:', responseData.error);
+            }
             console.log('Backend response:', responseData);
         } else {
             console.error('Failed to send video to backend. Status:', response.status);
