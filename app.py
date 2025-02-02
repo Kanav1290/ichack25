@@ -5,7 +5,6 @@ import random
 from io import BytesIO
 import numpy as np
 import subprocess
-from vosk import Model, KaldiRecognizer
 import cv2
 import wave
 import ffmpeg
@@ -14,6 +13,7 @@ import speech_recognition as sr
 from pydub import AudioSegment
 import openai
 import os
+import tempfile
 
 app = Flask(__name__)
 
@@ -151,8 +151,11 @@ def process_video():
     video_file.save(file_path)
     frames = video_to_frames(file_path)
     transcript = get_transcript(file_path)
+    app.logger.info(transcript)
     question = request.form.get('question', "Err getting question")
     (scores, verbal_response) = analyze_response(transcript, question)
+    app.logger.info(scores)
+    app.logger.info(verbal_response)
     (drowsy, alert) = drowsiness(frames)
     scores.append(alert)
     # Render an HTML page with a form that auto-submits via POST
@@ -170,30 +173,11 @@ def show_results():
 
     # Render the HTML page and pass variables to it
     return render_template('results.html', 
-                           relevance=scores[0], 
-                           conciseness=scores[1], 
-                           pacing=scores[2], 
-                           completeness=scores[3], 
-                           focusv=scores[4],
+                           scores=scores,
                            question=question,
                            vresponse=verbal_response)
 
-def extract_audio(video_stream):
-    import ffmpeg
-    command = [
-        'ffmpeg',
-        '-i', 'pipe:0',    # Input from stdin (video stream)
-        '-vn',              # No video, just audio
-        '-acodec', 'pcm_s16le',  # Audio codec: PCM 16-bit little-endian (WAV)
-        '-f', 'wav',        # Output format: WAV
-        'pipe:1'            # Output to stdout (pipe)
-    ]
-    
-    process = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    # Write the video stream data to FFmpeg's stdin
-    wav_data, _ = process.communicate(input=video_stream)
-    # Return the WAV data as an in-memory stream (BytesIO)
-    return wav_data
+import subprocess
 
 def video_to_frames(video_file, interval=10):
     video_capture = cv2.VideoCapture(video_file)
@@ -240,7 +224,7 @@ def drowsiness(frames):
     return (drowse, alert)
 
 def get_transcript(filepathofvideo):
-    try:
+    # try:
         app.logger.info("1")
         vid = mp.VideoFileClip(filepathofvideo)
         app.logger.info("2")
@@ -276,9 +260,9 @@ def get_transcript(filepathofvideo):
         
         return text.strip()
     
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        return ""
+    # except Exception as e:
+    #     print(f"An error occurred: {e}")
+    #     return ""
 
 def analyze_response(transcription, question, time=2):
     """Analyzes the transcribed response based on predefined criteria."""
