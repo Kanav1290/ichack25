@@ -16,23 +16,23 @@
     <!-- Bootstrap Navbar (Logo Left, Links Right) -->
     <nav class="navbar navbar-expand-lg shadow-sm sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="{{url_for('index')}}">Interview Practice</a>
+            <a class="navbar-brand fw-bold" href="{{url_for('index')}}" aria-label="Interview practice">Interview Practice</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link fw-semibold" href="{{url_for('index')}}">Home</a>
+                        <a class="nav-link fw-semibold" href="{{url_for('index')}}" aria-label="home">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-semibold" href="{{url_for('advice')}}">Advice</a>
+                        <a class="nav-link fw-semibold" href="{{url_for('advice')}}" aria-label="advice">Advice</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-semibold" href="{{url_for('results')}}">Results</a>
+                        <a class="nav-link fw-semibold" href="{{url_for('results')}}" aria-label="results">Results</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-semibold" href="{{url_for('help')}}">Help</a>
+                        <a class="nav-link fw-semibold" href="{{url_for('help')}}" aria-label="help">Help</a>
                     </li>
                 </ul>
             </div>
@@ -40,21 +40,21 @@
     </nav>
     <div class="container advicePage">
         
-        <h2 class="text-center mb-4">Interview Advice</h2>
+        <h2 class="text-center mb-4" aria-label="interview advice">Interview Advice</h2>
 
         <div class="accordion" id="adviceAccordion">
 
             <!-- Question Banks -->
             <div class="accordion-item">
                 <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#questionBanks">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#questionBanks" aria-label="Question Banks">
                         Question Banks
                     </button>
                 </h2>
                 <div id="questionBanks" class="accordion-collapse collapse" data-bs-parent="#adviceAccordion">
                     <div class="accordion-body external-links">
-                        <a href="https://www.wallstreetprep.com/knowledge/top-10-investment-banking-interview-questions/" target="_blank">Wall Street Prep - Investment Banking Questions</a>
-                        <a href="https://www.careers.cam.ac.uk/files/example_interview_questions_for_banking_and_financial_markets.pdf" target="_blank">Cambridge Careers - Example Questions</a>
+                        <a href="https://www.wallstreetprep.com/knowledge/top-10-investment-banking-interview-questions/" target="_blank" aria-label="Wall Street Prep - Investment Banking Questions">Wall Street Prep - Investment Banking Questions</a>
+                        <a href="https://www.careers.cam.ac.uk/files/example_interview_questions_for_banking_and_financial_markets.pdf" target="_blank" aria-label="Cambridge Careers - Example Questions">Cambridge Careers - Example Questions</a>
                     </div>
                 </div>
             </div>
@@ -62,16 +62,16 @@
             <!-- Interview Tips -->
             <div class="accordion-item">
                 <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#interviewTips">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#interviewTips" aria-label="Interview tips">
                         Interview Tips
                     </button>
                 </h2>
                 <div id="interviewTips" class="accordion-collapse collapse" data-bs-parent="#adviceAccordion">
                     <div class="accordion-body external-links">
-                        <a href="https://hbr.org/2024/09/the-hbr-guide-to-standing-out-in-an-interview" target="_blank">HBR Guide to Standing Out in an Interview</a>
-                        <a href="https://hbr.org/1964/01/strategies-of-effective-interviewing" target="_blank">HBR - Strategies of Effective Interviewing</a>
-                        <a href="https://hbr.org/2021/11/10-common-job-interview-questions-and-how-to-answer-them" target="_blank">HBR - 10 Common Interview Questions</a>
-                        <a href="https://hbr.org/2022/11/tips-for-acing-your-first-job-interview" target="_blank">HBR - Acing Your First Interview</a>
+                        <a href="https://hbr.org/2024/09/the-hbr-guide-to-standing-out-in-an-interview" target="_blank" aria-label="HBR Guide to Standing Out in an Interview">HBR Guide to Standing Out in an Interview</a>
+                        <a href="https://hbr.org/1964/01/strategies-of-effective-interviewing" target="_blank" aria-label="HBR - Strategies of Effective Interviewing">HBR - Strategies of Effective Interviewing</a>
+                        <a href="https://hbr.org/2021/11/10-common-job-interview-questions-and-how-to-answer-them" target="_blank" aria-label="HBR - 10 Common Interview Questions">HBR - 10 Common Interview Questions</a>
+                        <a href="https://hbr.org/2022/11/tips-for-acing-your-first-job-interview" target="_blank" aria-label="HBR - Acing Your First Interview">HBR - Acing Your First Interview</a>
                     </div>
                 </div>
             </div>
@@ -79,19 +79,29 @@
             <!-- Overview -->
             <div class="accordion-item">
                 <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#overview">
-                        Overview of HireVue Interviews
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#overview" aria-label="Overview of online interviews">
+                        Overview of Online Interviews
                     </button>
                 </h2>
                 <div id="overview" class="accordion-collapse collapse" data-bs-parent="#adviceAccordion">
                     <div class="accordion-body">
-                        <p>One-way video interviews where you record responses to fixed questions. Typically **2-5 questions** from three categories:</p>
+                        <p aria-label="One-way video interviews where you record responses to fixed questions. Typically **2-5 questions** from three categories:">
+                            One-way video interviews where you record responses to fixed questions. Typically **2-5 questions** from three categories:
+                        </p>
                         <ul>
-                            <li><strong>Motivational:</strong> Why this industry? Why this company?</li>
-                            <li><strong>Competency:</strong> Discuss a recent transaction or macroeconomic trend.</li>
-                            <li><strong>Behavioural:</strong> Tell me about a time when you faced a challenge and what you learned.</li>
+                            <li aria-label="Motivational: why this industry? why this company?">
+                                <strong>Motivational:</strong> Why this industry? Why this company?
+                            </li>
+                            <li aria-label="competency: discuss a recent transaction or macroeconomic trend">
+                                <strong>Competency:</strong> Discuss a recent transaction or macroeconomic trend.
+                            </li>
+                            <li aria-label="behavioural: tell me about a time when you faced a challenge and what you learned">
+                                <strong>Behavioural:</strong> Tell me about a time when you faced a challenge and what you learned.
+                            </li>
                         </ul>
-                        <p>You'll typically have <strong>30 seconds - 2 minutes of prep</strong> and <strong>1 - 3 minutes to answer.</strong></p>
+                        <p aria-label="You'll typically have 30 seconds - 2 minutes of prep and 1 - 3 minutes to answer.">
+                            You'll typically have <strong>30 seconds - 2 minutes of prep</strong> and <strong>1 - 3 minutes to answer.</strong>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -99,18 +109,18 @@
             <!-- How to Succeed -->
             <div class="accordion-item">
                 <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#succeed">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#succeed" aria-label="how to succeed in your interview">
                         How to Succeed in Your Interview
                     </button>
                 </h2>
                 <div id="succeed" class="accordion-collapse collapse" data-bs-parent="#adviceAccordion">
                     <div class="accordion-body">
                         <ul>
-                            <li>Company Research - Study their reports, values, and recent deals.</li>
-                            <li>Attend Insight Days - Follow their LinkedIn & Bright Network.</li>
-                            <li>Use Mergersight - Analyze past M&A transactions.</li>
-                            <li>Read Financial News - Financial Times, The Economist.</li>
-                            <li>Practice Storytelling - Use the STAR method for responses.</li>
+                            <li aria-label="Company Research - Study their reports, values, and recent deals.">Company Research - Study their reports, values, and recent deals.</li>
+                            <li aria-label="Attend Insight Days - Follow their LinkedIn & Bright network.">Attend Insight Days - Follow their LinkedIn & Bright Network.</li>
+                            <li aria-label="Use Mergersight - Analyze past M&A transactions.">Use Mergersight - Analyze past M&A transactions.</li>
+                            <li aria-label="Read Financial News - Financial Times, The Economist">Read Financial News - Financial Times, The Economist.</li>
+                            <li aria-label="Practice Storytelling - Use the STAR method for responses">Practice Storytelling - Use the STAR method for responses.</li>
                         </ul>
                     </div>
                 </div>
@@ -119,21 +129,24 @@
             <!-- Behavioral Questions (STAR Method) -->
             <div class="accordion-item">
                 <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#behavioral">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#behavioral" aria-label="answering behavioural questions (star method)">
                         Answering Behavioral Questions (STAR Method)
                     </button>
                 </h2>
                 <div id="behavioral" class="accordion-collapse collapse" data-bs-parent="#adviceAccordion">
                     <div class="accordion-body">
-                        <p>Structure responses using STAR:</p>
+                        <p aria-label="structure responses using star">Structure responses using STAR:</p>
                         <ul>
-                            <li><strong>Situation:</strong> Provide context (where, when, what).</li>
-                            <li><strong>Task:</strong> What did you need to achieve?</li>
-                            <li><strong>Action:</strong> Explain how you solved the problem.</li>
-                            <li><strong>Result:</strong> Describe the outcome and what you learned.</li>
+                            <li aria-label="Situation:Provide context (where, when, what)."><strong>Situation:</strong> Provide context (where, when, what).</li>
+                            <li aria-label="Task:What did you need to achieve?"><strong>Task:</strong> What did you need to achieve?</li>
+                            <li aria-label="Action:Explain how you solved the problem."><strong>Action:</strong> Explain how you solved the problem.</li>
+                            <li aria-label="Result: Describe the outcome and what you learned."><strong>Result:</strong> Describe the outcome and what you learned.</li>
                         </ul>
-                        <p><strong>Example:</strong></p>
-                        <blockquote>
+                        <p aria-label="example"><strong>Example:</strong></p>
+                        <blockquote aria-label="situation: Led a team project with a tight deadline.
+                                                Task: Deliver a client proposal in five days.
+                                                Action: Assigned tasks based on strengths and held daily check-ins.
+                                                Result: Submitted ahead of time, and the client approved our work.">
                             <strong>Situation:</strong> Led a team project with a tight deadline.<br>
                             <strong>Task:</strong> Deliver a client proposal in five days.<br>
                             <strong>Action:</strong> Assigned tasks based on strengths and held daily check-ins.<br>
