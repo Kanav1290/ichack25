@@ -229,7 +229,7 @@ def drowsiness(frames):
         return (50, 50)
     drowse = 0
     alert = 0
-    path = "warmup_model.keras"
+    path = "weights.h5"
     model = tf.keras.models.load_model(path)
     for frame in frames:
         image_resized = cv2.resize(frame, (224, 224)) 
@@ -299,7 +299,7 @@ def analyze_response(transcription, question, time=2):
     1. Scores for each criterion.
     2. Constructive feedback with specific examples of how to improve.
 
-    Provide in the following format (without the square brackets, these indicate where the data should be):
+    Provide in the following format (without the square brackets, these indicate where the data should be): THIS IS A MUST
     [score for Relevance to question]
     [score for clarity and structure]
     [score for confidence and tone]

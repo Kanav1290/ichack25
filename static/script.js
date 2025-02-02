@@ -77,7 +77,7 @@ async function getNextQuestion() {
     if (!prompt) {
         alert("No questions available.")
     }
-    localStorage.setItem('activeQuestion', JSON.stringify({ id: id, text: prompt }));
+    localStorage.setItem('activeQuestion', JSON.stringify({ id: id, text: prompt, prep: prep, time: time }));
     console.log(prompt);
     console.log(prep);
     console.log(time);
@@ -148,3 +148,13 @@ async function processVideo(blob) {
         console.error('Error during video upload:', error);
     }
 }
+
+const urlParams = new URLSearchParams(window.location.search);
+
+const autoClick = urlParams.get('autoClick');
+console.log(autoClick);
+
+if (autoClick === 'true') {
+document.getElementById('questionButton').click();
+
+}  
