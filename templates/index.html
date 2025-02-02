@@ -17,23 +17,23 @@
 <body>
     <nav class="navbar navbar-expand-lg shadow-sm sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="{{url_for('index')}}">Interview Practice</a>
+            <a class="navbar-brand fw-bold" href="{{url_for('index')}}" aria-label="interview practice">Interview Practice</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link fw-semibold" href="{{url_for('index')}}">Home</a>
+                        <a class="nav-link fw-semibold" href="{{url_for('index')}}" aria-label="home">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-semibold" href="{{url_for('advice')}}">Advice</a>
+                        <a class="nav-link fw-semibold" href="{{url_for('advice')}}" aria-label="advice">Advice</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-semibold" href="{{url_for('results')}}">Results</a>
+                        <a class="nav-link fw-semibold" href="{{url_for('results')}}" aria-label="results">Results</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-semibold" href="{{url_for('help')}}">Help</a>
+                        <a class="nav-link fw-semibold" href="{{url_for('help')}}" aria-label="help">Help</a>
                     </li>
                 </ul>
             </div>
@@ -45,7 +45,7 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <h2 class="mb-3 text-center">Record Your Interview</h2>
+            <h2 class="mb-3 text-center" aria-label="record your interview">Record Your Interview</h2>
             <div class="interview-box p-3 w-100">
                 <div class="video-container">
                     <video id="videoElement" autoplay class="w-100"></video>
@@ -64,9 +64,9 @@
                 <button id="chooseQuestionButton" class="btn btn-primary mb-2">Choose Question</button>
             </div>
             <div class="text-center mt-2">
-                <div>Prep Time Remaining:</div>
+                <div aria-label="prep time remaining">Prep Time Remaining:</div>
                 <div id="prepTimer">0</div>
-                <div>Record Time Remaining:</div>
+                <div aria-label="record time remaining">Record Time Remaining:</div>
                 <div id="recordTimer">0</div>
             </div>
             <div class="form-group mt-3">
