@@ -35,8 +35,10 @@
                 li.className = "list-group-item d-flex justify-content-between align-items-center";
                 li.innerHTML = `
                     ${q.text}
-                    <button class="btn btn-danger btn-sm" onclick="deleteQuestion(${q.id})">Delete</button>
-                    <button class="btn btn-success btn-sm" onclick="chooseQuestion(${q.id}, '${q.text}')">Choose Question</button>
+                    <div class="btn-group">
+                        <button class="btn btn-danger btn-sm" onclick="deleteQuestion(${q.id})">Delete</button>
+                        <button class="btn btn-success btn-sm" onclick="chooseQuestion(${q.id}, '${q.text}')">Choose Question</button>
+                    </div>
                 `;
                 questionsList.appendChild(li);
             });
