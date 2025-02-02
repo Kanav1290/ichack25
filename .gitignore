@@ -1,3 +1,4 @@
 api.key
 .venv/
 instance/questions.db
+uploads/
