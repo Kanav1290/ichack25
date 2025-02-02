@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 import random
 from io import BytesIO
-import cv2
 import numpy as np
 import subprocess
 from vosk import Model, KaldiRecognizer

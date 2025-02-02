@@ -1,3 +1,23 @@
+function togglelightdark() {
+
+    let themeStylesheet = document.getElementById("themeStylesheet");
+    let currentTheme = themeStylesheet.getAttribute("href");
+
+    let newTheme = currentTheme.includes("../static/styles.css") ? "../static/dark-mode.css" : "../static/styles.css";
+
+    themeStylesheet.setAttribute("href", newTheme);
+
+    localStorage.setItem("theme", newTheme);
+        
+}
+
+window.onload = function () {
+    let savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+        document.getElementById("themeStylesheet").setAttribute("href", savedTheme);
+    }
+}
+
 const videoElement = document.getElementById('videoElement');
 const questionButton = document.getElementById('questionButton');
 const questionText = document.getElementById('questionText');
@@ -114,6 +134,7 @@ questionButton.addEventListener('click', async () => {
     updateCounter(recordTimer, time);
     startCountdown(prepTimer, prep, () => onPrepEnd(time));
 });
+
 
 async function processVideo(blob) {
     //
