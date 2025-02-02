@@ -80,12 +80,17 @@
 window.addEventListener('load', () => {
     const activeQuestion = localStorage.getItem('activeQuestion');
     if (activeQuestion) {
-        const { text } = JSON.parse(activeQuestion);
+        const { text, prep, time } = JSON.parse(activeQuestion);
+        // Update the question text
         document.getElementById('questionText').innerText = text;
+        // Optionally, start the timers automatically if an active question is present:
+        updateCounter(recordTimer, time);  // Update record timer display immediately
+        startCountdown(prepTimer, prep, () => onPrepEnd(time));
     } else {
         document.getElementById('questionText').innerText = '"Please select a question"';
     }
 });
+
 
 // Function to handle the "Next Question" button click
 document.getElementById("questionButton").addEventListener("click", async () => {
