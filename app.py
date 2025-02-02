@@ -150,12 +150,15 @@ def process_video():
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], video_file.filename)
     video_file.save(file_path)
     frames = video_to_frames(file_path)
-    transcript = get_transcript(file_path)
-    app.logger.info(transcript)
+    mp4_path = convert_webm_to_mp4(file_path)
+    transcript = get_transcript(mp4_path)
+    #os.remove(file_path)
+    #os.remove(mp4_path)
+    app.logger.warning(transcript)
     question = request.form.get('question', "Err getting question")
     (scores, verbal_response) = analyze_response(transcript, question)
-    app.logger.info(scores)
-    app.logger.info(verbal_response)
+    app.logger.warning(scores)
+    app.logger.warning(verbal_response)
     (drowsy, alert) = drowsiness(frames)
     scores.append(alert)
     # Render an HTML page with a form that auto-submits via POST
@@ -178,6 +181,19 @@ def show_results():
                            vresponse=verbal_response)
 
 import subprocess
+
+def convert_webm_to_mp4(input_path, output_path='video.mp4'):
+    command = [
+        'ffmpeg',
+        '-i', input_path,  # Input file
+        '-c:v', 'libx264', # Video codec
+        '-c:a', 'aac',     # Audio codec
+        '-strict', 'experimental',
+        output_path
+    ]
+    subprocess.run(command)
+    return output_path
+
 
 def video_to_frames(video_file, interval=10):
     video_capture = cv2.VideoCapture(video_file)
@@ -224,21 +240,14 @@ def drowsiness(frames):
     return (drowse, alert)
 
 def get_transcript(filepathofvideo):
-    # try:
-        app.logger.info("1")
+    try:
         vid = mp.VideoFileClip(filepathofvideo)
-        app.logger.info("2")
         audiofile_path = "temp_audio.wav"
-        app.logger.info("3")
         vid.audio.write_audiofile(audiofile_path)
-        app.logger.info("4")
         
         vid.close()
-        app.logger.info("5")
         audio = AudioSegment.from_wav(audiofile_path)
-        app.logger.info("6")
         recognizer = sr.Recognizer()
-        app.logger.info("7")
         text = ""
         
         for start_ms in range(0, len(audio), 10000):
@@ -255,14 +264,14 @@ def get_transcript(filepathofvideo):
                 except sr.RequestError as e:
                     print(f"Could not request results; {e}")
         
-        os.remove(audiofile_path)
-        os.remove(chunk_path)
+        #os.remove(audiofile_path)
+        #os.remove(chunk_path)
         
         return text.strip()
     
-    # except Exception as e:
-    #     print(f"An error occurred: {e}")
-    #     return ""
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return ""
 
 def analyze_response(transcription, question, time=2):
     """Analyzes the transcribed response based on predefined criteria."""
