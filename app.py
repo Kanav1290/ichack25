@@ -257,8 +257,8 @@ def get_transcript(filepathofvideo):
         recognizer = sr.Recognizer()
         text = ""
         
-        for start_ms in range(0, len(audio), 10000):
-            chunk = audio[start_ms:start_ms + 10000]
+        for start_ms in range(0, len(audio), 30000):
+            chunk = audio[start_ms:start_ms + 30000]
             chunk_path = "chunk.wav"
             chunk.export(chunk_path, format="wav")
             
