@@ -80,20 +80,17 @@ def questions_page():
 
 ### 🚀 API ROUTES ###
 
-# ✅ Get a random question
 @app.route('/api/get-prompt', methods=['GET'])
 def get_question():
-    '''question = Question.query.order_by(db.func.random()).first()
+    question = Question.query.order_by(db.func.random()).first()  # Get a random question from DB
     if question:
-        return jsonify(question.to_dict())'''
-    prompt = Prompt()
-    data = {
-        'prompt' : prompt.text,
-        'prepTime' : prompt.prep,
-        'answerTime' : prompt.time
-    }
-    return jsonify(data), 200
+        return jsonify({
+            'prompt': question.text,
+            'prepTime': question.prep_time,
+            'answerTime': question.answer_time
+        })
     return jsonify({"error": "No questions available"}), 404
+
 
 # ✅ Get all questions
 @app.route('/api/questions', methods=['GET'])
@@ -125,8 +122,18 @@ def add_question():
 def get_next_question():
     question = Question.query.order_by(db.func.random()).first()  # Get a random question
     if question:
-        return jsonify(question.to_dict())
+        # Delete the question after it has been selected
+        db.session.delete(question)
+        db.session.commit()
+        
+        return jsonify({
+            'id': question.id,
+            'text': question.text,
+            'prepTime': question.prep_time,
+            'answerTime': question.answer_time
+        })
     return jsonify({"error": "No questions available"}), 404
+
 
 # ✅ Delete a question
 @app.route('/api/questions/<int:question_id>', methods=['DELETE'])
@@ -332,12 +339,15 @@ def analyze_response(transcription, question, time=2):
         return ([0,0,0,0], "Error generating OpenAI request")
 
 def getPrompt():
-    return Prompt()
-
-class Prompt():
-    text = "Sample question"
-    prep = 1
-    time = 5
+    # Fetch a random question from the database (similar to your get_question route)
+    question = Question.query.order_by(db.func.random()).first()  # Get a random question from DB
+    if question:
+        return {
+            'prompt': question.text,
+            'prepTime': question.prep_time,
+            'answerTime': question.answer_time
+        }
+    return None  # Or handle as needed if no question is found
 
 ### 🚀 DATABASE SETUP ###
 if __name__ == '__main__':
