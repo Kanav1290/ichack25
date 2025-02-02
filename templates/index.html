@@ -11,8 +11,6 @@
     <!-- Custom CSS -->
     <link id="dyslexicStylesheet" rel="stylesheet" href="">
     <link id="themeStylesheet" rel="stylesheet" href="../static/styles.css">
-
-
 </head>
 <body>
     <nav class="navbar navbar-expand-lg shadow-sm sticky-top">
@@ -59,9 +57,8 @@
                 <p id="questionText">"Please select a question"</p>
             </div>
             <div class="d-flex justify-content-center align-items-center gap-3">
-                <button id="recordButton" class="btn btn-primary mb-2">Start Recording</button>
                 <button id="questionButton" class="btn btn-primary mb-2">Next Question</button>
-                <button id="chooseQuestionButton" class="btn btn-primary mb-2">Choose Question</button>
+                <button id="chooseQuestionButton" class="btn btn-primary mb-2" onclick="window.location.href='/questions'">Choose Question</button>
             </div>
             <div class="text-center mt-2">
                 <div aria-label="prep time remaining">Prep Time Remaining:</div>
@@ -78,8 +75,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-
-
 <script>
 // Load the active question from localStorage if available
 window.addEventListener('load', () => {
@@ -93,7 +88,6 @@ window.addEventListener('load', () => {
 });
 
 // Function to handle the "Next Question" button click
-
 document.getElementById("questionButton").addEventListener("click", async () => {
     try {
         const response = await fetch("/api/get-next-question");
@@ -114,5 +108,6 @@ document.getElementById("questionButton").addEventListener("click", async () => 
 </script>
 
 <script src="../static/script.js"></script>
+</body>
 <script src="../static/darkdyslexic.js"></script>
 </html>
