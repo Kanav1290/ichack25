@@ -82,14 +82,22 @@ def questions_page():
 
 @app.route('/api/get-prompt', methods=['GET'])
 def get_question():
-    question = Question.query.order_by(db.func.random()).first()  # Get a random question from DB
+    last_question_id = session.get('last_question_id', None)
+    if last_question_id is None:
+        question = Question.query.order_by(Question.id).first()  # Get the first question
+    else:
+        question = Question.query.filter(Question.id > last_question_id).order_by(Question.id).first()
+    
     if question:
+        session['last_question_id'] = question.id
+        
         return jsonify({
             'prompt': question.text,
             'prepTime': question.prep_time,
             'answerTime': question.answer_time
         })
-    return jsonify({"error": "No questions available"}), 404
+    
+    return jsonify({"error": "No more questions available"}), 404
 
 
 # ✅ Get all questions
@@ -120,20 +128,21 @@ def add_question():
 
 @app.route('/api/get-next-question', methods=['GET'])
 def get_next_question():
-    question = Question.query.order_by(db.func.random()).first()  # Get a random question
+    last_question_id = session.get('last_question_id', None)
+    if last_question_id is None:
+        question = Question.query.order_by(Question.id).first()  # Get the first question
+    else:
+        question = Question.query.filter(Question.id > last_question_id).order_by(Question.id).first()
     if question:
-        # Delete the question after it has been selected
-        db.session.delete(question)
-        db.session.commit()
-        
+        session['last_question_id'] = question.id
         return jsonify({
             'id': question.id,
             'text': question.text,
             'prepTime': question.prep_time,
             'answerTime': question.answer_time
         })
-    return jsonify({"error": "No questions available"}), 404
-
+    
+    return jsonify({"error": "No more questions available"}), 404
 
 # ✅ Delete a question
 @app.route('/api/questions/<int:question_id>', methods=['DELETE'])
@@ -323,15 +332,20 @@ def analyze_response(transcription, question, time=2):
         return ([0,0,0,0], "Error generating OpenAI request")
 
 def getPrompt():
-    # Fetch a random question from the database (similar to your get_question route)
-    question = Question.query.order_by(db.func.random()).first()  # Get a random question from DB
+    last_question_id = session.get('last_question_id', None)
+    if last_question_id is None:
+        question = Question.query.order_by(Question.id).first()  # Get the first question
+    else:
+        question = Question.query.filter(Question.id > last_question_id).order_by(Question.id).first()
     if question:
+        session['last_question_id'] = question.id
         return {
             'prompt': question.text,
             'prepTime': question.prep_time,
             'answerTime': question.answer_time
         }
     return None  # Or handle as needed if no question is found
+
 
 ### 🚀 DATABASE SETUP ###
 if __name__ == '__main__':
