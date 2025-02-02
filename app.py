@@ -246,6 +246,8 @@ def drowsiness(frames):
         else:
             alert +=1
     s = drowse + alert
+    app.logger.warning(drowse)
+    app.logger.warning(alert)
     drowse, alert = drowse * 100 / s, alert * 100 / s
     return (drowse, alert)
 
