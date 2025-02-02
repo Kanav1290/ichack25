@@ -1,3 +1,23 @@
+function togglelightdark() {
+
+    let themeStylesheet = document.getElementById("themeStylesheet");
+    let currentTheme = themeStylesheet.getAttribute("href");
+
+    let newTheme = currentTheme.includes("../static/styles.css") ? "../static/dark-mode.css" : "../static/styles.css";
+
+    themeStylesheet.setAttribute("href", newTheme);
+
+    localStorage.setItem("theme", newTheme);
+        
+}
+
+window.onload = function () {
+    let savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+        document.getElementById("themeStylesheet").setAttribute("href", savedTheme);
+    }
+}
+
 const videoElement = document.getElementById('videoElement');
 const questionButton = document.getElementById('questionButton');
 const questionText = document.getElementById('questionText');
@@ -117,6 +137,7 @@ questionButton.addEventListener('click', async () => {
     startCountdown(prepTimer, prep, () => onPrepEnd(time));
 });
 
+
 async function processVideo(blob) {
     // Create a FormData object to send the Blob to the Flask backend
     const formData = new FormData();
@@ -140,17 +161,4 @@ async function processVideo(blob) {
     } catch (error) {
         console.error('Error during video upload:', error);
     }
-}
-
-
-function togglelightdark() {
-
-    let lightdark = document.getElementById("lightdark")
-
-    if (lightdark.getAttribute("href") == "../static/styles.css") {
-        lightdark.setAttribute("href", "../static/dark-mode.css");
-    } else {
-        lightdark.setAttribute("href", "../static/styles.css");
-    }
-        
 }

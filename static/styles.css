@@ -115,6 +115,14 @@ body {
     color: #007BFF;
     text-decoration: none;
 }
+
 .external-links a:hover {
     text-decoration: underline;
 }
+
+.darkBody {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+
