@@ -4,3 +4,7 @@ numpy
 opencv-python
 vosk
 ffmpeg-python
+moviepy
+SpeechRecognition
+pydub
+openai
