@@ -65,14 +65,19 @@ function stopRecording() {
 }
 
 async function getNextQuestion() {
-    const response = await fetch('http://127.0.0.1:5000/api/get-prompt');
+    const response = await fetch('http://127.0.0.1:5000/api/get-next-question');
     if (!response.ok) {
         throw new Error('Error status: ${response.status}')
     }
     const data = await response.json();
+    const id = data.id;
     const prompt = data.prompt;
     const prep = data.prepTime;
     const time = data.answerTime;
+    if (!prompt) {
+        alert("No questions available.")
+    }
+    localStorage.setItem('activeQuestion', JSON.stringify({ id: id, text: prompt }));
     console.log(prompt);
     console.log(prep);
     console.log(time);
@@ -107,8 +112,9 @@ questionButton.addEventListener('click', async () => {
     questionButton.disabled = true;
     recordedChunks = [];  // Clear previous chunks
     console.log("Button pressed");
-    const {prompt, prep, time} = await getNextQuestion();
+    const {id, prompt, prep, time} = await getNextQuestion();
     questionText.innerText = prompt;
+    localStorage.setItem('activeQuestion', JSON.stringify({ id: id, text: prompt }));
     updateCounter(recordTimer, time);
     startCountdown(prepTimer, prep, () => onPrepEnd(time));
 });

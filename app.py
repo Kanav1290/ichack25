@@ -128,7 +128,7 @@ def get_next_question():
         
         return jsonify({
             'id': question.id,
-            'text': question.text,
+            'prompt': question.text,
             'prepTime': question.prep_time,
             'answerTime': question.answer_time
         })
@@ -159,8 +159,8 @@ def process_video():
     frames = video_to_frames(file_path)
     mp4_path = convert_webm_to_mp4(file_path)
     transcript = get_transcript(mp4_path)
-    #os.remove(file_path)
-    #os.remove(mp4_path)
+    os.remove(file_path)
+    os.remove(mp4_path)
     app.logger.warning(transcript)
     question = request.form.get('question', "Err getting question")
     (scores, verbal_response) = analyze_response(transcript, question)
@@ -271,8 +271,8 @@ def get_transcript(filepathofvideo):
                 except sr.RequestError as e:
                     print(f"Could not request results; {e}")
         
-        #os.remove(audiofile_path)
-        #os.remove(chunk_path)
+        os.remove(audiofile_path)
+        os.remove(chunk_path)
         
         return text.strip()
     
@@ -328,7 +328,7 @@ def analyze_response(transcription, question, time=2):
         return (first_four_integers, remaining_text)
     
     except Exception as e:
-        app.logger.info(f"Error with OpenAI request: {e}")
+        app.logger.error(f"Error with OpenAI request: {e}")
         return ([0,0,0,0], "Error generating OpenAI request")
 
 def getPrompt():
