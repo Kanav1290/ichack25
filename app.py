@@ -123,8 +123,8 @@ def get_next_question():
     question = Question.query.order_by(db.func.random()).first()  # Get a random question
     if question:
         # Delete the question after it has been selected
-        db.session.delete(question)
-        db.session.commit()
+        # db.session.delete(question)
+        # db.session.commit()
         
         return jsonify({
             'id': question.id,
