@@ -91,10 +91,11 @@ body {
 .resultsPage {
     max-width: 1300px;
     margin: 30px auto;
-    background: rgb(18, 17, 17);
+    background: rgba(243, 243, 243, 0.932);
+    color: #000000;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(247, 247, 247, 0.976);
+    box-shadow: 0 0 20px rgba(247, 247, 247, 0.976);
     align-items: center;
 }
 .optionsContainer {
@@ -117,7 +118,7 @@ body {
 .external-links a {
     display: block;
     margin-bottom: 5px;
-    color: #007BFF;
+    color: #add5ff;
     text-decoration: none;
 }
 
