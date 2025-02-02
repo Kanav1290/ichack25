@@ -91,123 +91,11 @@ body {
 .resultsPage {
     max-width: 1300px;
     margin: 30px auto;
-    background: rgb(18, 17, 17);
+    background: rgba(243, 243, 243, 0.932);
+    color: #000000;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(247, 247, 247, 0.976);
-    align-items: center;
-}
-.optionsContainer {
-    max-width: 300px;
-    margin: 30px auto;
-    background: rgb(18, 18, 18);
-    padding: 20px;
-    position: relative;
-}
-.accordion-button {
-    font-weight: bold;
-    background: #000000;
-    color: #ffffff;
-}
-.accordion-body {
-    font-size: 16px;
-    background: #000000;
-    background: #0b0c0e; /* Light Gray Background */
-    color: #ffffff
-}
-.container-fluid {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.interview-box {
-    max-width: 800px;
-    background: rgb(17, 16, 16);
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0px 4px 10px rgba(211, 211, 211, 0.1);
-}
-.video-container {
-    position: relative;
-    border-radius: 10px;
-    overflow: hidden;
-    border: 10px solid #302c2c;
-}
-.right-panel {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-}
-.quote-box {
-    background: #2f3134;
-    color: #ffffff;
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-}
-.btn-prep {
-    background-color: #ffc107;
-    color: rgb(255, 255, 255);
-}
-.btn-record {
-    background-color: #dc3545;
-    color: white;
-}
-.top-container {
-    display: flex;
-    width: 80%;
-    justify-content: space-between;
-}
-.chart-container {
-    width: 45%;
-}
-.bottom-container {
-    width: 80%;
-    border-top: 2px solid #1f1d1d;
-    padding-top: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-#chatbox {
-    width: 100%;
-    height: 150px;
-    border: 3px solid #ccc;
-    overflow-y: auto;
-    padding: 10px;
-    border-radius: 15px;
-}
-#inputBox {
-    width: 100%;
-    padding: 10px;
-    border-radius: 10px;
-}
-.helpPage {
-    max-width: 900px;
-    margin: 30px auto;
-    background: rgb(17, 17, 17);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    align-items: center;
-}
-.advicePage {
-    max-width: 900px;
-    margin: 30px auto;
-    background: rgb(16, 15, 15);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-.resultsPage {
-    max-width: 1300px;
-    margin: 30px auto;
-    background: rgb(18, 17, 17);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(247, 247, 247, 0.976);
+    box-shadow: 0 0 20px rgba(247, 247, 247, 0.976);
     align-items: center;
 }
 .optionsContainer {
@@ -230,7 +118,7 @@ body {
 .external-links a {
     display: block;
     margin-bottom: 5px;
-    color: #007BFF;
+    color: #add5ff;
     text-decoration: none;
 }
 

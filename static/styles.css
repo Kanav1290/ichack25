@@ -120,9 +120,14 @@ body {
     text-decoration: underline;
 }
 
-.darkBody {
-    background-color: #121212;
-    color: #ffffff;
+nav {
+    background-color: #ffffff;
 }
 
+.nav-link {
+    color: #141414;
+}
 
+.navbar-brand {
+    color: #0f0e0e;
+}

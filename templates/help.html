@@ -9,7 +9,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- Custom CSS -->
+    <link id="dyslexicStylesheet" rel="stylesheet" href="">
     <link id="themeStylesheet" rel="stylesheet" href="../static/styles.css">
+
 </head>
 <body>
 <!-- Bootstrap Navbar (Logo Left, Links Right) -->
@@ -100,9 +102,9 @@
         <div class="mt-4"></div>
         
         <div class="optionsContainer btn-group-vertical w-100 d-flex justify-content-center align-items-center">
-                <button class="btn btn-dark w-50" type="button" id="darkModeToggle" onclick="togglelightdark()">Dark</button>
-                <button class="btn btn-dark w-50" type="button" id="">Dyslexic</button>
-                <button class="btn btn-dark w-50" type="button" id="">Text To Speech</button>
+                <button class="btn btn-dark w-100" type="button" onclick="togglelightdark()">Light/Dark</button>
+                <button class="btn btn-dark w-100" type="button" onclick="toggledyslexic()">Normal/Dyslexic</button>
+                <button class="btn btn-dark w-100" type="button" >No Audio/Text To Speech</button>
             </div>
         </div>
     </div>

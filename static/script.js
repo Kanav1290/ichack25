@@ -11,11 +11,30 @@ function togglelightdark() {
         
 }
 
+function toggledyslexic() {
+    let dyslexicStylesheet = document.getElementById("dyslexicStylesheet");
+    let isDyslexic = dyslexicStylesheet.getAttribute("href") === "../static/dyslexic.css";
+
+    if (isDyslexic) {
+        dyslexicStylesheet.setAttribute("href", "");
+        localStorage.setItem("dyslexic", "off");
+    } else {
+        dyslexicStylesheet.setAttribute("href", "../static/dyslexic.css");
+        localStorage.setItem("dyslexic", "on");
+    }
+}
+
 window.onload = function () {
     let savedTheme = localStorage.getItem("theme");
     if (savedTheme) {
         document.getElementById("themeStylesheet").setAttribute("href", savedTheme);
     }
+
+    let savedDyslexic = localStorage.getItem("dyslexic");
+    if (savedDyslexic === "on") {
+        document.getElementById("dyslexicStylesheet").setAttribute("href", "../static/dyslexic.css")
+    }
+
 }
 
 const videoElement = document.getElementById('videoElement');
@@ -40,6 +59,8 @@ async function startWebcam() {
 
         mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
         mediaRecorder.stop()
+
+
 
         mediaRecorder.ondataavailable = (event) => {
             if (event.data.size > 0) {
@@ -137,13 +158,9 @@ questionButton.addEventListener('click', async () => {
 
 
 async function processVideo(blob) {
-    //
-    //TODO: Go to processing results page
-    //
     // Create a FormData object to send the Blob to the Flask backend
     const formData = new FormData();
     formData.append('video', blob, 'video.webm');  // Append the video Blob
-    formData.append('question', questionText.innerText)
     try {
         // Send the video to the backend using fetch
         const response = await fetch('http://127.0.0.1:5000/api/process-video', {
@@ -163,17 +180,4 @@ async function processVideo(blob) {
     } catch (error) {
         console.error('Error during video upload:', error);
     }
-}
-
-
-function togglelightdark() {
-
-    let lightdark = document.getElementById("lightdark")
-
-    if (lightdark.getAttribute("href") == "../static/styles.css") {
-        lightdark.setAttribute("href", "../static/dark-mode.css");
-    } else {
-        lightdark.setAttribute("href", "../static/styles.css");
-    }
-        
 }
