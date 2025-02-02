@@ -100,7 +100,7 @@ function startCountdown(element, timeInSeconds, callback) {
 function updateCounter(element, countdown) {
     const minutes = Math.floor(countdown / 60);
     const seconds = countdown % 60;
-    element.innerText = `Time remaining: ${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+    element.innerText = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
 }
 function onPrepEnd(time) {
     startRecording();
