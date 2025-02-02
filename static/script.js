@@ -13,15 +13,11 @@ async function startWebcam() {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
         videoElement.srcObject = stream;
 
-        const audioTrack = stream.getAudioTracks()[0];
-        if (audioTrack) {
-            audioTrack.enabled = false;  // Disable the audio track
-        }
+        videoElement.muted = true; // Prevent audio playback from video element
+        videoElement.play(); // Start playing video without audio
 
         mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
         mediaRecorder.stop()
-
-
 
         mediaRecorder.ondataavailable = (event) => {
             if (event.data.size > 0) {
