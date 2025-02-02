@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, render_template_string
+from flask import Flask, request, jsonify, render_template, render_template_string, session, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 import os
 import random
@@ -14,14 +14,16 @@ import speech_recognition as sr
 from pydub import AudioSegment
 import openai
 import os
+
+app = Flask(__name__)
+
 with open("api.key", "r+") as f:
     key = f.read()
     if len(key) == 0:
         raise Exception("Mising OpenAI key")
     else:
         openai.api_key = key
-
-app = Flask(__name__)
+        app.secret_key = key
 
 try:
     import tensorflow as tf
@@ -149,46 +151,32 @@ def process_video():
     video_file.save(file_path)
     frames = video_to_frames(file_path)
     transcript = get_transcript(file_path)
-    (scores, verbal_response) = analyze_response(transcript, request.files['question'])
+    question = request.form.get('question', "Err getting question")
+    (scores, verbal_response) = analyze_response(transcript, question)
     (drowsy, alert) = drowsiness(frames)
     scores.append(alert)
     # Render an HTML page with a form that auto-submits via POST
-    form_html = f'''
-    <form id="resultForm" action="/result" method="post">
-        <input type="hidden" name="relevance" value="{scores[0]}">
-        <input type="hidden" name="conciseness" value="{scores[1]}">
-        <input type="hidden" name="pacing" value="{scores[2]}">
-        <input type="hidden" name="completeness" value="{scores[3]}">
-        <input type="hidden" name="focus" value="{scores[4]}">
-        <input type="hidden" name="question" value="{request.files['question']}">
-        <input type="hidden" name="vresponse" value="{verbal_response}">
-    </form>
-    <script>
-        document.getElementById("resultForm").submit();
-    </script>
-    '''
-    return render_template_string(form_html)
+    session['scores'] = scores
+    session['verbal_response'] = verbal_response
+    session['question'] = question
+    return redirect(url_for('show_results'))
 
 @app.route('/result', methods=['POST'])
-def result_page():
+def show_results():
     # Extract values from the form request
-    relevance = request.form.get('relevance', '100')
-    conciseness = request.form.get('conciseness', '100')
-    pacing = request.form.get('pacing', '100')
-    completeness = request.form.get('completeness', '100')
-    focus = request.form.get('focus', '100')
-    question = request.form.get('question', "Err getting question")
-    vresponse = request.form.get('vresponse', "Err generating response")
+    scores = session.get('scores', [])
+    verbal_response = session.get('verbal_response', "Err generating response")
+    question = session.get('question', "Err getting question")
 
     # Render the HTML page and pass variables to it
     return render_template('results.html', 
-                           relevance=relevance, 
-                           conciseness=conciseness, 
-                           pacing=pacing, 
-                           completeness=completeness, 
-                           focusv=focus,
+                           relevance=scores[0], 
+                           conciseness=scores[1], 
+                           pacing=scores[2], 
+                           completeness=scores[3], 
+                           focusv=scores[4],
                            question=question,
-                           vresponse=vresponse)
+                           vresponse=verbal_response)
 
 def extract_audio(video_stream):
     import ffmpeg
@@ -223,7 +211,6 @@ def video_to_frames(video_file, interval=10):
 
         if frame_count % interval == 0:          
             frames.append(frame)
-            frame_id += 1
         
         frame_count += 1
 
@@ -254,15 +241,20 @@ def drowsiness(frames):
 
 def get_transcript(filepathofvideo):
     try:
+        app.logger.info("1")
         vid = mp.VideoFileClip(filepathofvideo)
-        
+        app.logger.info("2")
         audiofile_path = "temp_audio.wav"
+        app.logger.info("3")
         vid.audio.write_audiofile(audiofile_path)
+        app.logger.info("4")
         
         vid.close()
-        
+        app.logger.info("5")
         audio = AudioSegment.from_wav(audiofile_path)
+        app.logger.info("6")
         recognizer = sr.Recognizer()
+        app.logger.info("7")
         text = ""
         
         for start_ms in range(0, len(audio), 10000):
