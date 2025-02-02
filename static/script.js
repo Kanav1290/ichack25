@@ -21,8 +21,6 @@ async function startWebcam() {
         mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
         mediaRecorder.stop()
 
-
-
         mediaRecorder.ondataavailable = (event) => {
             if (event.data.size > 0) {
                 recordedChunks.push(event.data);
@@ -118,9 +116,13 @@ questionButton.addEventListener('click', async () => {
 });
 
 async function processVideo(blob) {
+    //
+    //TODO: Go to processing results page
+    //
     // Create a FormData object to send the Blob to the Flask backend
     const formData = new FormData();
     formData.append('video', blob, 'video.webm');  // Append the video Blob
+    formData.append('question', questionText.innerText)
     try {
         // Send the video to the backend using fetch
         const response = await fetch('http://127.0.0.1:5000/api/process-video', {

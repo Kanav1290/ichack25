@@ -61,7 +61,7 @@
             data: {
                 labels: ['Relevance', 'Conciseness', 'Pacing', 'Completeness', 'Focus'],
                 datasets: [{
-                    data: [5, 3, 4, 2, 5],
+                    data: {{ [relevance, conciseness, pacing, completeness, focusv] | tojson }},
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     borderColor: 'rgba(54, 162, 235, 1)',
                     borderWidth: 2

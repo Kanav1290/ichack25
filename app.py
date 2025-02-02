@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, render_template_string
 from flask_sqlalchemy import SQLAlchemy
 import os
 import random
@@ -10,9 +10,26 @@ from vosk import Model, KaldiRecognizer
 import cv2
 import wave
 import ffmpeg
+import moviepy as mp
+import speech_recognition as sr
+from pydub import AudioSegment
+import openai
+import os
+with open("api.key", "r+") as f:
+    key = f.read()
+    if len(key) == 0:
+        raise Exception("Mising OpenAI key")
+    else:
+        openai.api_key = key
 
 app = Flask(__name__)
 
+try:
+    import tensorflow as tf
+    TF = True
+except:
+    TF = False
+    app.logger.warning("Could not import TF")
 # Configure database
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///questions.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -65,9 +82,16 @@ def questions_page():
 # ✅ Get a random question
 @app.route('/api/get-prompt', methods=['GET'])
 def get_question():
-    question = Question.query.order_by(db.func.random()).first()
+    '''question = Question.query.order_by(db.func.random()).first()
     if question:
-        return jsonify(question.to_dict())
+        return jsonify(question.to_dict())'''
+    prompt = Prompt()
+    data = {
+        'prompt' : prompt.text,
+        'prepTime' : prompt.prep,
+        'answerTime' : prompt.time
+    }
+    return jsonify(data), 200
     return jsonify({"error": "No questions available"}), 404
 
 # ✅ Get all questions
@@ -121,61 +145,51 @@ def process_video():
     video_file = request.files['video']
     if video_file.filename == '':
         return jsonify({'error': 'No selected file'}), 400
-    
-    video_data = video_file.read()
-    video_stream = BytesIO(video_data)
-    audio_data = extract_audio(video_data)
-    with open('audio_test.wav', 'wb') as f:
-        f.write(audio_data)
-    audio_stream = wave.open(BytesIO(audio_data), "rb")
 
-    video_np = np.frombuffer(video_data, np.uint8)
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], video_file.filename)
+    video_file.save(file_path)
+    frames = video_to_frames(file_path)
+    transcript = get_transcript(file_path)
+    (scores, verbal_response) = analyze_response(transcript, request.files['question'])
+    (drowsy, alert) = drowsiness(frames)
+    scores.append(alert)
+    # Render an HTML page with a form that auto-submits via POST
+    form_html = f'''
+    <form id="resultForm" action="/result" method="post">
+        <input type="hidden" name="relevance" value="{scores[0]}">
+        <input type="hidden" name="conciseness" value="{scores[1]}">
+        <input type="hidden" name="pacing" value="{scores[2]}">
+        <input type="hidden" name="completeness" value="{scores[3]}">
+        <input type="hidden" name="focus" value="{scores[4]}">
+        <input type="hidden" name="question" value="{request.files['question']}">
+        <input type="hidden" name="vresponse" value="{verbal_response}">
+    </form>
+    <script>
+        document.getElementById("resultForm").submit();
+    </script>
+    '''
+    return render_template_string(form_html)
 
-    app.logger.info(video_np.size)
-    video = cv2.imdecode(video_np, cv2.IMREAD_COLOR)
+@app.route('/result', methods=['POST'])
+def result_page():
+    # Extract values from the form request
+    relevance = request.form.get('relevance', '100')
+    conciseness = request.form.get('conciseness', '100')
+    pacing = request.form.get('pacing', '100')
+    completeness = request.form.get('completeness', '100')
+    focus = request.form.get('focus', '100')
+    question = request.form.get('question', "Err getting question")
+    vresponse = request.form.get('vresponse', "Err generating response")
 
-    if video is None:
-        app.logger.info("Failed to decode")
-        return jsonify({'error': 'Failed to decode video'}), 400
-    
-    frames = []
-    cap = cv2.VideoCapture(video_data)
-    frame_count = 0
-    while cap.isOpened():
-        ret, frame = cap.read()  # Read a frame
-        if not ret:
-            break  # End of video stream
-        
-        # Only save every 15th frame
-        if frame_count % 15 == 0:
-            frames.append(frame)  # Store the frame (OpenCV image)
-        
-        frame_count += 1
-    cap.release()
-
-    model = Model("model")  # Path to vosk model
-    recognizer = KaldiRecognizer(model, 16000)  # Assuming audio is 16 kHz
-    
-    # Transcribe audio from the video stream
-    transcription = ""
-    while True:
-        data = audio_stream.readframes(4000)
-        if len(data) == 0:
-            break
-        if recognizer.AcceptWaveform(data):
-            result = recognizer.Result()
-            transcription += result
-    
-    for i, frame in enumerate(frames):
-        cv2.imwrite(os.path.join(app.confid['UPLOAD_FOLDER'], f"frame${i}.jpg"), frame)
-    app.logger.info(f"Transcription: ${transcription}")
-    app.logger.info(f"Num frames: ${len(frames)}")
-    # Combine frames and transcription into the response
-    return jsonify({
-        'message': 'Video processed successfully',
-        'frame_count': len(frames),
-        'transcription': transcription
-    }), 200
+    # Render the HTML page and pass variables to it
+    return render_template('results.html', 
+                           relevance=relevance, 
+                           conciseness=conciseness, 
+                           pacing=pacing, 
+                           completeness=completeness, 
+                           focusv=focus,
+                           question=question,
+                           vresponse=vresponse)
 
 def extract_audio(video_stream):
     import ffmpeg
@@ -193,6 +207,138 @@ def extract_audio(video_stream):
     wav_data, _ = process.communicate(input=video_stream)
     # Return the WAV data as an in-memory stream (BytesIO)
     return wav_data
+
+def video_to_frames(video_file, interval=10):
+    video_capture = cv2.VideoCapture(video_file)
+
+    if not video_capture.isOpened():
+        return
+
+    frame_count = 0
+    frames = []
+    while True:
+        ret, frame = video_capture.read()
+        
+        if not ret:
+            break
+
+        if frame_count % interval == 0:          
+            frames.append(frame)
+            frame_id += 1
+        
+        frame_count += 1
+
+    video_capture.release()
+    return frames
+
+def drowsiness(frames):
+    if not TF:
+        return (50, 50)
+    drowse = 0
+    alert = 0
+    path = "warmup_model.keras"
+    model = tf.keras.models.load_model(path)
+    for frame in frames:
+        image_resized = cv2.resize(frame, (224, 224)) 
+        image_resized = image_resized / 255.0  # Rescale
+        image_resized = np.expand_dims(image_resized, axis=0)
+        if frame is None:
+            continue
+        predict = model(image_resized)
+        if predict > 0.5 :
+            drowse +=1
+        else:
+            alert +=1
+    s = drowse + alert
+    drowse, alert = drowse * 100 / s, alert * 100 / s
+    return (drowse, alert)
+
+def get_transcript(filepathofvideo):
+    try:
+        vid = mp.VideoFileClip(filepathofvideo)
+        
+        audiofile_path = "temp_audio.wav"
+        vid.audio.write_audiofile(audiofile_path)
+        
+        vid.close()
+        
+        audio = AudioSegment.from_wav(audiofile_path)
+        recognizer = sr.Recognizer()
+        text = ""
+        
+        for start_ms in range(0, len(audio), 10000):
+            chunk = audio[start_ms:start_ms + 10000]
+            chunk_path = "chunk.wav"
+            chunk.export(chunk_path, format="wav")
+            
+            with sr.AudioFile(chunk_path) as source:
+                audio_data = recognizer.record(source)
+                try:
+                    text += recognizer.recognize_google(audio_data) + " "
+                except sr.UnknownValueError:
+                    text += "\n section of audio wasn't present\n"
+                except sr.RequestError as e:
+                    print(f"Could not request results; {e}")
+        
+        os.remove(audiofile_path)
+        os.remove(chunk_path)
+        
+        return text.strip()
+    
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return ""
+
+def analyze_response(transcription, question, time=2):
+    """Analyzes the transcribed response based on predefined criteria."""
+    prompt = f"""
+    You are an AI interview assistant. A candidate has answered an interview question with a "{time}-minute" recording.
+    Be harsh but fair.
+
+    Question: "{question}"
+    Candidate's response: "{transcription}"
+
+    Scoring Rubric:
+    - Relevance to the question (0-100)
+    - Clarity and structure (0-100)
+    - Pacing (0-100)
+    - Use of examples and detail (0-100)
+
+    Provide:
+    1. Scores for each criterion.
+    2. Constructive feedback with specific examples of how to improve.
+
+    Provide in the following format (without the square brackets, these indicate where the data should be):
+    [score for Relevance to question]
+    [score for clariry and structure]
+    [score for confidence and tone]
+    [score for use of examples and detail]
+
+    [feedback]
+    """
+
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-4",  # Use "gpt-4" if needed
+            messages=[
+                {"role": "system", "content": "You are an expert interview evaluator."},
+                {"role": "user", "content": prompt}
+            ]
+        )
+        raw = response['choices'][0]['message']['content']
+        lines = raw.strip().split("\n")
+
+        # Extract the first four integers from the first four lines
+        first_four_integers = [int(lines[i]) for i in range(4)]
+
+        # Extract the text after the empty line
+        empty_line_index = lines.index("") if "" in lines else 4
+        remaining_text = "\n".join(lines[empty_line_index + 1:])
+        return (first_four_integers, remaining_text)
+    
+    except Exception as e:
+        app.logger.info(f"Error with OpenAI request: {e}")
+        return ([0,0,0,0], "Error generating OpenAI request")
 
 def getPrompt():
     return Prompt()
